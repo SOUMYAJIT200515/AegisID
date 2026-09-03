@@ -1,4 +1,4 @@
-package com.AegisID.backend.authentication.entity;
+package com.AegisID.backend.identity.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;

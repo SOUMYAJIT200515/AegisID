@@ -1,6 +1,6 @@
-package com.AegisID.backend.authentication.repsitory;
+package com.AegisID.backend.identity.repository;
 
-import com.AegisID.backend.authentication.entity.Identity;
+import com.AegisID.backend.identity.entity.Identity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
