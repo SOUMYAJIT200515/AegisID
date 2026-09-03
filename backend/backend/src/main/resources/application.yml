@@ -1,0 +1,20 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: aegisid-backend
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/aegisid
+    username: root
+    password: Soumy@2005
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
