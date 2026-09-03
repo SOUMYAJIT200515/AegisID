@@ -11,9 +11,12 @@ public class TestController {
 
     @GetMapping("/protected")
     public String protectedEndpoint(Authentication authentication) {
-
         return "JWT authentication successful. Logged in as: "
                 + authentication.getName();
     }
-}
 
+    @GetMapping("/authorities")
+    public Object authorities(Authentication authentication) {
+        return authentication.getAuthorities();
+    }
+}
