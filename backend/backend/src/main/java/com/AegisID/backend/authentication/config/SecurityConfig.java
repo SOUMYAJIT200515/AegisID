@@ -15,10 +15,20 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfig {
 
+    // =========================
+    // PASSWORD ENCODER
+    // =========================
+
     @Bean
     public PasswordEncoder passwordEncoder() {
+
         return new BCryptPasswordEncoder();
     }
+
+
+    // =========================
+    // AUTHENTICATION MANAGER
+    // =========================
 
     @Bean
     public AuthenticationManager authenticationManager(
@@ -28,6 +38,11 @@ public class SecurityConfig {
         return configuration.getAuthenticationManager();
     }
 
+
+    // =========================
+    // SECURITY FILTER CHAIN
+    // =========================
+
     @Bean
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http,
@@ -35,12 +50,22 @@ public class SecurityConfig {
             throws Exception {
 
         http
-                // CSRF is ignored for our REST API
+
+                // =========================
+                // CSRF
+                // =========================
+
                 .csrf(csrf -> csrf
                         .ignoringRequestMatchers("/api/**")
                 )
 
+
+                // =========================
+                // AUTHORIZATION
+                // =========================
+
                 .authorizeHttpRequests(auth -> auth
+
 
                         // =========================
                         // PUBLIC ENDPOINTS
@@ -74,35 +99,148 @@ public class SecurityConfig {
                         // USER APIs
                         // =========================
 
-                        // GET /api/users
-                        // GET /api/users/{id}
-                        //
-                        // Requires USER_READ permission
                         .requestMatchers(
                                 HttpMethod.GET,
                                 "/api/users/**"
                         )
                         .hasAuthority("USER_READ")
 
-// POST /api/users
-                                .requestMatchers(
-                                        HttpMethod.POST,
-                                        "/api/users"
-                                )
-                                .hasAuthority("USER_CREATE")
 
-// PUT /api/users/{id}
-                                .requestMatchers(
-                                        HttpMethod.PUT,
-                                        "/api/users/**"
-                                )
-                                .hasAuthority("USER_UPDATE")
-                                // DELETE /api/users/{id}
-                                .requestMatchers(
-                                        HttpMethod.DELETE,
-                                        "/api/users/**"
-                                )
-                                .hasAuthority("USER_SUSPEND")
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/api/users"
+                        )
+                        .hasAuthority("USER_CREATE")
+
+
+                        .requestMatchers(
+                                HttpMethod.PUT,
+                                "/api/users/**"
+                        )
+                        .hasAuthority("USER_UPDATE")
+
+
+                        .requestMatchers(
+                                HttpMethod.DELETE,
+                                "/api/users/**"
+                        )
+                        .hasAuthority("USER_SUSPEND")
+
+
+                        // =========================
+                        // IDENTITY APIs
+                        // =========================
+
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/identities/**"
+                        )
+                        .hasAuthority("IDENTITY_READ")
+
+
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/api/identities"
+                        )
+                        .hasAuthority("IDENTITY_CREATE")
+
+
+                        .requestMatchers(
+                                HttpMethod.PUT,
+                                "/api/identities/*/wallet"
+                        )
+                        .hasAuthority("IDENTITY_UPDATE")
+
+
+                        .requestMatchers(
+                                HttpMethod.PUT,
+                                "/api/identities/*/verify"
+                        )
+                        .hasAuthority("IDENTITY_VERIFY")
+
+
+                        .requestMatchers(
+                                HttpMethod.PUT,
+                                "/api/identities/*/reject"
+                        )
+                        .hasAuthority("IDENTITY_VERIFY")
+
+
+                        .requestMatchers(
+                                HttpMethod.PUT,
+                                "/api/identities/*/suspend"
+                        )
+                        .hasAuthority("IDENTITY_SUSPEND")
+
+
+                        .requestMatchers(
+                                HttpMethod.PUT,
+                                "/api/identities/*/revoke"
+                        )
+                        .hasAuthority("IDENTITY_REVOKE")
+
+
+                        .requestMatchers(
+                                HttpMethod.PUT,
+                                "/api/identities/*/reactivate"
+                        )
+                        .hasAuthority("IDENTITY_UPDATE")
+
+
+                        // =========================
+                        // CREDENTIAL APIs
+                        // =========================
+
+                        // VERIFY + VALIDATE
+                        // These MUST come before
+                        // the general GET credential rule.
+
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/credentials/*/verify",
+                                "/api/credentials/*/validate"
+                        )
+                        .hasAuthority("CREDENTIAL_VERIFY")
+
+
+                        // GENERAL CREDENTIAL GET
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/credentials/**"
+                        )
+                        .hasAuthority("CREDENTIAL_READ")
+
+
+                        // CREATE CREDENTIAL
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/api/credentials"
+                        )
+                        .hasAuthority("CREDENTIAL_CREATE")
+
+
+                        // REVOKE CREDENTIAL
+                        .requestMatchers(
+                                HttpMethod.PUT,
+                                "/api/credentials/*/revoke"
+                        )
+                        .hasAuthority("CREDENTIAL_REVOKE")
+
+
+                        // REACTIVATE CREDENTIAL
+                        .requestMatchers(
+                                HttpMethod.PUT,
+                                "/api/credentials/*/reactivate"
+                        )
+                        .hasAuthority("CREDENTIAL_UPDATE")
+
+
+                        // EXPIRE CREDENTIAL
+                        .requestMatchers(
+                                HttpMethod.PUT,
+                                "/api/credentials/*/expire"
+                        )
+                        .hasAuthority("CREDENTIAL_UPDATE")
 
 
                         // =========================
@@ -113,6 +251,7 @@ public class SecurityConfig {
                         .authenticated()
                 )
 
+
                 // =========================
                 // JWT FILTER
                 // =========================
@@ -121,6 +260,7 @@ public class SecurityConfig {
                         jwtAuthenticationFilter,
                         UsernamePasswordAuthenticationFilter.class
                 )
+
 
                 // =========================
                 // WEBAUTHN CONFIGURATION

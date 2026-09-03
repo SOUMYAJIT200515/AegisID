@@ -63,6 +63,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             UserDetails userDetails =
                     userDetailsService.loadUserByUsername(username);
 
+            // TEMPORARY DEBUG
+            System.out.println("JWT USER: " + username);
+            System.out.println(
+                    "AUTHORITIES: " + userDetails.getAuthorities()
+            );
+
             if (jwtService.isTokenValid(token, userDetails)) {
 
                 UsernamePasswordAuthenticationToken authentication =
@@ -85,4 +91,3 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 }
-
