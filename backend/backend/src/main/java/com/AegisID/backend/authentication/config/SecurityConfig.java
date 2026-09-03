@@ -6,9 +6,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -53,10 +53,10 @@ public class SecurityConfig {
                 // =========================
                 // CSRF
                 // =========================
+                // REST API uses JWT authentication,
+                // so CSRF protection is disabled.
 
-                .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/api/**")
-                )
+                .csrf(csrf -> csrf.disable())
 
 
                 // =========================
@@ -70,23 +70,20 @@ public class SecurityConfig {
                         // PUBLIC ENDPOINTS
                         // =========================
 
-                        .requestMatchers("/api/health")
+                        .requestMatchers(
+                                "/api/health"
+                        )
                         .permitAll()
 
-                        // Blockchain connectivity/health test
-                        .requestMatchers("/api/blockchain/status",
-                                "/api/blockchain/contract",
-                                "/api/blockchain/identity/**",
-                                "/api/blockchain/identity/anchor")
-                        .permitAll()
 
-                        .requestMatchers("/api/auth/login")
-                        .permitAll()
+                        // =========================
+                        // AUTHENTICATION
+                        // =========================
 
-                        .requestMatchers("/api/auth/dev-login")
-                        .permitAll()
-
-                        .requestMatchers("/csrf")
+                        .requestMatchers(
+                                "/api/auth/login",
+                                "/api/auth/dev-login"
+                        )
                         .permitAll()
 
 
@@ -94,10 +91,56 @@ public class SecurityConfig {
                         // WEBAUTHN
                         // =========================
 
-                        .requestMatchers("/webauthn/**")
+                        .requestMatchers(
+                                "/webauthn/**",
+                                "/login/webauthn"
+                        )
                         .permitAll()
 
-                        .requestMatchers("/login/webauthn")
+
+                        // =========================
+                        // CSRF ENDPOINT
+                        // =========================
+
+                        .requestMatchers(
+                                "/csrf"
+                        )
+                        .permitAll()
+
+
+                        // =========================
+                        // BLOCKCHAIN
+                        // =========================
+
+                        // Blockchain status
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/blockchain/status"
+                        )
+                        .permitAll()
+
+
+                        // Blockchain contract information
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/blockchain/contract"
+                        )
+                        .permitAll()
+
+
+                        // Read blockchain identity
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/blockchain/identity/**"
+                        )
+                        .permitAll()
+
+
+                        // Anchor identity on blockchain
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/api/blockchain/identity/anchor"
+                        )
                         .permitAll()
 
 
@@ -187,10 +230,6 @@ public class SecurityConfig {
                         // CREDENTIAL APIs
                         // =========================
 
-                        // VERIFY + VALIDATE
-                        // These MUST come before
-                        // the general GET credential rule.
-
                         .requestMatchers(
                                 HttpMethod.GET,
                                 "/api/credentials/*/verify",
@@ -198,17 +237,11 @@ public class SecurityConfig {
                         )
                         .hasAuthority("CREDENTIAL_VERIFY")
 
-
-                        // GENERAL CREDENTIAL GET
-
                         .requestMatchers(
                                 HttpMethod.GET,
                                 "/api/credentials/**"
                         )
                         .hasAuthority("CREDENTIAL_READ")
-
-
-                        // CREATE CREDENTIAL
 
                         .requestMatchers(
                                 HttpMethod.POST,
@@ -216,26 +249,17 @@ public class SecurityConfig {
                         )
                         .hasAuthority("CREDENTIAL_CREATE")
 
-
-                        // REVOKE CREDENTIAL
-
                         .requestMatchers(
                                 HttpMethod.PUT,
                                 "/api/credentials/*/revoke"
                         )
                         .hasAuthority("CREDENTIAL_REVOKE")
 
-
-                        // REACTIVATE CREDENTIAL
-
                         .requestMatchers(
                                 HttpMethod.PUT,
                                 "/api/credentials/*/reactivate"
                         )
                         .hasAuthority("CREDENTIAL_UPDATE")
-
-
-                        // EXPIRE CREDENTIAL
 
                         .requestMatchers(
                                 HttpMethod.PUT,

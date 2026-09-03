@@ -30,7 +30,11 @@ public class BlockchainTransaction {
     @Column(name = "entity_type")
     private String entityType;
 
-    @Column(name = "entity_id")
+    /*
+     * Nullable because some blockchain operations may not have
+     * a corresponding database entity ID.
+     */
+    @Column(name = "entity_id", nullable = true)
     private Long entityId;
 
     @Column(name = "chain_id")
@@ -76,6 +80,7 @@ public class BlockchainTransaction {
 
     public enum OperationType {
         IDENTITY_ANCHOR,
+        CREDENTIAL_ANCHOR,
         ROLE_UPDATE,
         ASSET_MINT,
         ASSET_ASSIGN,

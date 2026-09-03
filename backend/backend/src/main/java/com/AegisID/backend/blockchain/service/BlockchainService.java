@@ -65,9 +65,9 @@ public class BlockchainService {
     }
 
 
-    // =========================
+    // =========================================================
     // BLOCKCHAIN CONNECTION
-    // =========================
+    // =========================================================
 
     public String getNetworkVersion() throws Exception {
 
@@ -87,9 +87,9 @@ public class BlockchainService {
     }
 
 
-    // =========================
+    // =========================================================
     // CONTRACT INFORMATION
-    // =========================
+    // =========================================================
 
     public String getContractAddress() {
 
@@ -97,9 +97,9 @@ public class BlockchainService {
     }
 
 
-    // =========================
+    // =========================================================
     // READ IDENTITY
-    // =========================
+    // =========================================================
 
     public List<Type> getIdentity(
             String identityHash)
@@ -159,9 +159,9 @@ public class BlockchainService {
     }
 
 
-    // =========================
+    // =========================================================
     // ANCHOR IDENTITY
-    // =========================
+    // =========================================================
 
     public String anchorIdentity(
             String identityHash,
@@ -420,9 +420,344 @@ public class BlockchainService {
     }
 
 
-    // =========================
+    // =========================================================
+    // READ CREDENTIAL
+    // =========================================================
+
+    public List<Type> getCredential(
+            String credentialHash)
+            throws Exception {
+
+        validateCredentialHash(credentialHash);
+
+        Function function = new Function(
+                "getCredential",
+
+                Arrays.asList(
+                        new Bytes32(
+                                Numeric.hexStringToByteArray(
+                                        credentialHash
+                                )
+                        )
+                ),
+
+                Arrays.asList(
+                        new TypeReference<Bytes32>() {},
+                        new TypeReference<Bytes32>() {},
+                        new TypeReference<Address>() {},
+                        new TypeReference<Uint256>() {},
+                        new TypeReference<Bool>() {}
+                )
+        );
+
+
+        String encodedFunction =
+                FunctionEncoder.encode(function);
+
+
+        EthCall response = web3j
+                .ethCall(
+                        Transaction.createEthCallTransaction(
+                                null,
+                                blockchainConfig.getContractAddress(),
+                                encodedFunction
+                        ),
+                        DefaultBlockParameterName.LATEST
+                )
+                .send();
+
+
+        if (response.hasError()) {
+
+            throw new RuntimeException(
+                    "Blockchain contract call failed: "
+                            + response.getError().getMessage()
+            );
+        }
+
+
+        return FunctionReturnDecoder.decode(
+                response.getValue(),
+                function.getOutputParameters()
+        );
+    }
+
+
+    // =========================================================
+    // ANCHOR CREDENTIAL
+    // =========================================================
+
+    public String anchorCredential(
+            String credentialHash,
+            String identityHash)
+            throws Exception {
+
+        validateCredentialHash(credentialHash);
+        validateIdentityHash(identityHash);
+
+
+        // =========================================
+        // CREATE TRANSACTION RECORD
+        // =========================================
+
+        BlockchainTransaction blockchainTransaction =
+                new BlockchainTransaction();
+
+        String operationId =
+                "CREDENTIAL_ANCHOR-" + UUID.randomUUID();
+
+        blockchainTransaction.setOperationId(
+                operationId
+        );
+
+        blockchainTransaction.setOperationType(
+                BlockchainTransaction.OperationType.CREDENTIAL_ANCHOR
+        );
+
+        blockchainTransaction.setEntityType(
+                "CREDENTIAL"
+        );
+
+        blockchainTransaction.setChainId(
+                Long.parseLong(
+                        getNetworkVersion()
+                )
+        );
+
+        blockchainTransaction.setContractAddress(
+                blockchainConfig.getContractAddress()
+        );
+
+        blockchainTransaction.setStatus(
+                BlockchainTransaction.TransactionStatus.PENDING
+        );
+
+
+        BlockchainTransaction savedTransaction =
+                transactionRepository.save(
+                        blockchainTransaction
+                );
+
+
+        try {
+
+            // =========================================
+            // LOAD BLOCKCHAIN ACCOUNT
+            // =========================================
+
+            Credentials credentials =
+                    Credentials.create(privateKey);
+
+            String senderAddress =
+                    credentials.getAddress();
+
+
+            savedTransaction.setFromAddress(
+                    senderAddress
+            );
+
+            savedTransaction.setToAddress(
+                    blockchainConfig.getContractAddress()
+            );
+
+            savedTransaction.setStatus(
+                    BlockchainTransaction.TransactionStatus.SUBMITTED
+            );
+
+            savedTransaction.setSubmittedAt(
+                    LocalDateTime.now()
+            );
+
+            transactionRepository.save(
+                    savedTransaction
+            );
+
+
+            // =========================================
+            // CREATE SOLIDITY FUNCTION
+            // =========================================
+
+            Function function = new Function(
+                    "anchorCredential",
+
+                    Arrays.asList(
+
+                            new Bytes32(
+                                    Numeric.hexStringToByteArray(
+                                            credentialHash
+                                    )
+                            ),
+
+                            new Bytes32(
+                                    Numeric.hexStringToByteArray(
+                                            identityHash
+                                    )
+                            )
+                    ),
+
+                    List.of()
+            );
+
+
+            String encodedFunction =
+                    FunctionEncoder.encode(
+                            function
+                    );
+
+
+            // =========================================
+            // TRANSACTION MANAGER
+            // =========================================
+
+            TransactionManager transactionManager =
+                    new RawTransactionManager(
+                            web3j,
+                            credentials
+                    );
+
+
+            // =========================================
+            // SEND TRANSACTION
+            // =========================================
+
+            EthSendTransaction transaction =
+                    transactionManager.sendTransaction(
+                            GAS_PRICE,
+                            GAS_LIMIT,
+                            blockchainConfig.getContractAddress(),
+                            encodedFunction,
+                            BigInteger.ZERO
+                    );
+
+
+            // =========================================
+            // CHECK SUBMISSION
+            // =========================================
+
+            if (transaction.hasError()) {
+
+                savedTransaction.setStatus(
+                        BlockchainTransaction.TransactionStatus.FAILED
+                );
+
+                savedTransaction.setErrorMessage(
+                        transaction.getError().getMessage()
+                );
+
+                transactionRepository.save(
+                        savedTransaction
+                );
+
+                throw new RuntimeException(
+                        "Blockchain credential transaction failed: "
+                                + transaction.getError().getMessage()
+                );
+            }
+
+
+            String transactionHash =
+                    transaction.getTransactionHash();
+
+
+            savedTransaction.setTransactionHash(
+                    transactionHash
+            );
+
+            transactionRepository.save(
+                    savedTransaction
+            );
+
+
+            // =========================================
+            // WAIT FOR RECEIPT
+            // =========================================
+
+            TransactionReceipt receipt =
+                    waitForReceipt(transactionHash);
+
+
+            // =========================================
+            // CHECK RECEIPT
+            // =========================================
+
+            if (!receipt.isStatusOK()) {
+
+                savedTransaction.setStatus(
+                        BlockchainTransaction.TransactionStatus.FAILED
+                );
+
+                savedTransaction.setErrorMessage(
+                        "Blockchain credential transaction reverted"
+                );
+
+                transactionRepository.save(
+                        savedTransaction
+                );
+
+                throw new RuntimeException(
+                        "Blockchain credential transaction reverted: "
+                                + transactionHash
+                );
+            }
+
+
+            // =========================================
+            // SAVE CONFIRMED TRANSACTION
+            // =========================================
+
+            savedTransaction.setStatus(
+                    BlockchainTransaction.TransactionStatus.CONFIRMED
+            );
+
+            savedTransaction.setBlockNumber(
+                    receipt.getBlockNumber().longValue()
+            );
+
+            savedTransaction.setGasUsed(
+                    receipt.getGasUsed().longValue()
+            );
+
+            savedTransaction.setConfirmedAt(
+                    LocalDateTime.now()
+            );
+
+            transactionRepository.save(
+                    savedTransaction
+            );
+
+
+            return transactionHash;
+
+        } catch (Exception exception) {
+
+            // =========================================
+            // SAVE FAILURE
+            // =========================================
+
+            if (savedTransaction.getStatus()
+                    != BlockchainTransaction.TransactionStatus.CONFIRMED) {
+
+                savedTransaction.setStatus(
+                        BlockchainTransaction.TransactionStatus.FAILED
+                );
+
+                savedTransaction.setErrorMessage(
+                        exception.getMessage()
+                );
+
+                transactionRepository.save(
+                        savedTransaction
+                );
+            }
+
+            throw exception;
+        }
+    }
+
+
+    // =========================================================
     // VALIDATE IDENTITY HASH
-    // =========================
+    // =========================================================
 
     private void validateIdentityHash(
             String identityHash) {
@@ -438,9 +773,27 @@ public class BlockchainService {
     }
 
 
-    // =========================
+    // =========================================================
+    // VALIDATE CREDENTIAL HASH
+    // =========================================================
+
+    private void validateCredentialHash(
+            String credentialHash) {
+
+        if (credentialHash == null ||
+                !credentialHash.matches(
+                        "^0x[0-9a-fA-F]{64}$")) {
+
+            throw new IllegalArgumentException(
+                    "Credential hash must be a valid bytes32 hex value"
+            );
+        }
+    }
+
+
+    // =========================================================
     // VALIDATE WALLET ADDRESS
-    // =========================
+    // =========================================================
 
     private void validateWalletAddress(
             String walletAddress) {
@@ -456,9 +809,9 @@ public class BlockchainService {
     }
 
 
-    // =========================
+    // =========================================================
     // WAIT FOR TRANSACTION
-    // =========================
+    // =========================================================
 
     private TransactionReceipt waitForReceipt(
             String transactionHash)

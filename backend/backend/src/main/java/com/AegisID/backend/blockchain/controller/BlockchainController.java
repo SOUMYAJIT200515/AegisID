@@ -3,6 +3,10 @@ package com.AegisID.backend.blockchain.controller;
 import com.AegisID.backend.blockchain.service.BlockchainService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigInteger;
 import java.util.HashMap;
@@ -103,5 +107,69 @@ public class BlockchainController {
         response.put("walletAddress", walletAddress);
 
         return ResponseEntity.ok(response);
+    }
+    // =========================================================
+// ANCHOR CREDENTIAL
+// =========================================================
+
+    @PostMapping("/credential/anchor")
+    public ResponseEntity<?> anchorCredential(
+            @RequestParam String credentialHash,
+            @RequestParam String identityHash)
+            throws Exception {
+
+        String transactionHash =
+                blockchainService.anchorCredential(
+                        credentialHash,
+                        identityHash
+                );
+
+        Map<String, Object> response =
+                new HashMap<>();
+
+        response.put(
+                "success",
+                true
+        );
+
+        response.put(
+                "message",
+                "Credential anchored successfully"
+        );
+
+        response.put(
+                "credentialHash",
+                credentialHash
+        );
+
+        response.put(
+                "identityHash",
+                identityHash
+        );
+
+        response.put(
+                "transactionHash",
+                transactionHash
+        );
+
+        return ResponseEntity.ok(response);
+    }
+
+
+// =========================================================
+// READ CREDENTIAL
+// =========================================================
+
+    @GetMapping("/credential/{credentialHash}")
+    public ResponseEntity<?> getCredential(
+            @PathVariable String credentialHash)
+            throws Exception {
+
+        List<?> result =
+                blockchainService.getCredential(
+                        credentialHash
+                );
+
+        return ResponseEntity.ok(result);
     }
 }
