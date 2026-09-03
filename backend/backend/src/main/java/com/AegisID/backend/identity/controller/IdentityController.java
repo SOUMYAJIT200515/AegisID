@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/identities")
@@ -136,6 +137,20 @@ public class IdentityController {
 
         return ResponseEntity.ok(
                 identityService.reactivateIdentity(id)
+        );
+    }
+    @GetMapping("/{id}/hash")
+    public ResponseEntity<?> getIdentityHash(
+            @PathVariable Long id) {
+
+        String identityHash =
+                identityService.generateIdentityHash(id);
+
+        return ResponseEntity.ok(
+                Map.of(
+                        "identityId", id,
+                        "identityHash", identityHash
+                )
         );
     }
 }

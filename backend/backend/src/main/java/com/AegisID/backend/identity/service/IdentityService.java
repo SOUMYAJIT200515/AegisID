@@ -2,6 +2,7 @@ package com.AegisID.backend.identity.service;
 
 import com.AegisID.backend.identity.entity.Identity;
 import com.AegisID.backend.identity.repository.IdentityRepository;
+import com.AegisID.backend.identity.util.IdentityHashUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -149,5 +150,13 @@ public class IdentityService {
                 Identity.IdentityStatus.ACTIVE);
 
         return identityRepository.save(identity);
+    }
+    public String generateIdentityHash(Long identityId) {
+
+        Identity identity = getIdentityById(identityId);
+
+        return IdentityHashUtil.generateIdentityHash(
+                identity.getDid()
+        );
     }
 }

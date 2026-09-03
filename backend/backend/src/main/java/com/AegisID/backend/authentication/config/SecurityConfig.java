@@ -6,9 +6,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -112,7 +112,10 @@ public class SecurityConfig {
                         // BLOCKCHAIN
                         // =========================
 
+                        // -------------------------
                         // Blockchain status
+                        // -------------------------
+
                         .requestMatchers(
                                 HttpMethod.GET,
                                 "/api/blockchain/status"
@@ -120,7 +123,10 @@ public class SecurityConfig {
                         .permitAll()
 
 
-                        // Blockchain contract information
+                        // -------------------------
+                        // Blockchain contract info
+                        // -------------------------
+
                         .requestMatchers(
                                 HttpMethod.GET,
                                 "/api/blockchain/contract"
@@ -128,7 +134,10 @@ public class SecurityConfig {
                         .permitAll()
 
 
+                        // -------------------------
                         // Read blockchain identity
+                        // -------------------------
+
                         .requestMatchers(
                                 HttpMethod.GET,
                                 "/api/blockchain/identity/**"
@@ -136,10 +145,46 @@ public class SecurityConfig {
                         .permitAll()
 
 
-                        // Anchor identity on blockchain
+                        // -------------------------
+                        // Anchor identity
+                        // -------------------------
+
                         .requestMatchers(
                                 HttpMethod.POST,
                                 "/api/blockchain/identity/anchor"
+                        )
+                        .permitAll()
+
+
+                        // -------------------------
+                        // Generate identity hash
+                        // -------------------------
+
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/identities/*/hash"
+                        )
+                        .permitAll()
+
+
+                        // -------------------------
+                        // Anchor credential
+                        // -------------------------
+
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/api/blockchain/credential/anchor"
+                        )
+                        .permitAll()
+
+
+                        // -------------------------
+                        // Read blockchain credential
+                        // -------------------------
+
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/blockchain/credential/**"
                         )
                         .permitAll()
 
@@ -230,6 +275,7 @@ public class SecurityConfig {
                         // CREDENTIAL APIs
                         // =========================
 
+                        // Verify / validate credential
                         .requestMatchers(
                                 HttpMethod.GET,
                                 "/api/credentials/*/verify",
@@ -237,30 +283,40 @@ public class SecurityConfig {
                         )
                         .hasAuthority("CREDENTIAL_VERIFY")
 
+
+                        // Read credentials
                         .requestMatchers(
                                 HttpMethod.GET,
                                 "/api/credentials/**"
                         )
                         .hasAuthority("CREDENTIAL_READ")
 
+
+                        // Create credential
                         .requestMatchers(
                                 HttpMethod.POST,
                                 "/api/credentials"
                         )
                         .hasAuthority("CREDENTIAL_CREATE")
 
+
+                        // Revoke credential
                         .requestMatchers(
                                 HttpMethod.PUT,
                                 "/api/credentials/*/revoke"
                         )
                         .hasAuthority("CREDENTIAL_REVOKE")
 
+
+                        // Reactivate credential
                         .requestMatchers(
                                 HttpMethod.PUT,
                                 "/api/credentials/*/reactivate"
                         )
                         .hasAuthority("CREDENTIAL_UPDATE")
 
+
+                        // Expire credential
                         .requestMatchers(
                                 HttpMethod.PUT,
                                 "/api/credentials/*/expire"
@@ -298,6 +354,7 @@ public class SecurityConfig {
                                 "http://localhost:8080"
                         )
                 );
+
 
         return http.build();
     }
