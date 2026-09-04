@@ -4,6 +4,7 @@ import com.AegisID.backend.blockchain.service.BlockchainService;
 import com.AegisID.backend.blockchain.service.BlockchainVerificationService;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@PreAuthorize("isAuthenticated()")
 @RequestMapping("/api/blockchain")
 public class BlockchainController {
 

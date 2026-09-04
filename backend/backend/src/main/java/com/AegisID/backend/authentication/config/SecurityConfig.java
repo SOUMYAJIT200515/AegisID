@@ -107,66 +107,6 @@ public class SecurityConfig {
 
 
                         // =================================================
-                        // BLOCKCHAIN
-                        // =================================================
-
-                        // Blockchain status
-                        .requestMatchers(
-                                HttpMethod.GET,
-                                "/api/blockchain/status"
-                        )
-                        .permitAll()
-
-
-                        // Smart contract information
-                        .requestMatchers(
-                                HttpMethod.GET,
-                                "/api/blockchain/contract"
-                        )
-                        .permitAll()
-
-
-                        // Read identity from blockchain
-                        .requestMatchers(
-                                HttpMethod.GET,
-                                "/api/blockchain/identity/**"
-                        )
-                        .permitAll()
-
-
-                        // Anchor identity
-                        .requestMatchers(
-                                HttpMethod.POST,
-                                "/api/blockchain/identity/anchor"
-                        )
-                        .permitAll()
-
-
-                        // Generate identity hash
-                        .requestMatchers(
-                                HttpMethod.GET,
-                                "/api/identities/*/hash"
-                        )
-                        .permitAll()
-
-
-                        // Anchor credential
-                        .requestMatchers(
-                                HttpMethod.POST,
-                                "/api/blockchain/credential/anchor"
-                        )
-                        .permitAll()
-
-
-                        // Read credential from blockchain
-                        .requestMatchers(
-                                HttpMethod.GET,
-                                "/api/blockchain/credential/**"
-                        )
-                        .permitAll()
-
-
-                        // =================================================
                         // BLOCKCHAIN DIGITAL ASSETS
                         // =================================================
 

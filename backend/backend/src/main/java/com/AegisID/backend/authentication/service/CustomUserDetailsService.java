@@ -54,14 +54,21 @@ public class CustomUserDetailsService implements UserDetailsService {
                         )
                 );
 
-        // 2. Find user's active role assignments
+        // 2. Check account status
+        if (!"ACTIVE".equalsIgnoreCase(user.getStatus())) {
+            throw new UsernameNotFoundException(
+                    "User account is not active"
+            );
+        }
+
+        // 3. Find user's active role assignments
         List<UserRole> userRoles =
                 userRoleRepository.findByUserIdAndStatus(
                         user.getId(),
                         UserRole.Status.ACTIVE
                 );
 
-        // 3. Convert roles → permissions → authorities
+        // 4. Convert roles → permissions → authorities
         List<SimpleGrantedAuthority> authorities =
                 userRoles.stream()
 
@@ -111,7 +118,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                         .distinct()
                         .toList();
 
-        // 4. Create Spring Security user with authorities
+        // 5. Create Spring Security user with authorities
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getUsername())
                 .password(user.getPasswordHash())
