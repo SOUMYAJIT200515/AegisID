@@ -8,9 +8,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
 @Configuration
 public class SecurityConfig {
@@ -24,7 +24,6 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-
     // =========================
     // AUTHENTICATION MANAGER
     // =========================
@@ -36,7 +35,6 @@ public class SecurityConfig {
 
         return configuration.getAuthenticationManager();
     }
-
 
     // =========================
     // SECURITY FILTER CHAIN
@@ -53,18 +51,14 @@ public class SecurityConfig {
                 // =========================
                 // CSRF
                 // =========================
-                // REST API uses JWT authentication,
-                // so CSRF protection is disabled.
 
                 .csrf(csrf -> csrf.disable())
-
 
                 // =========================
                 // AUTHORIZATION
                 // =========================
 
                 .authorizeHttpRequests(auth -> auth
-
 
                         // =========================
                         // PUBLIC ENDPOINTS
@@ -74,7 +68,6 @@ public class SecurityConfig {
                                 "/api/health"
                         )
                         .permitAll()
-
 
                         // =========================
                         // AUTHENTICATION
@@ -86,7 +79,6 @@ public class SecurityConfig {
                         )
                         .permitAll()
 
-
                         // =========================
                         // WEBAUTHN
                         // =========================
@@ -97,7 +89,6 @@ public class SecurityConfig {
                         )
                         .permitAll()
 
-
                         // =========================
                         // CSRF ENDPOINT
                         // =========================
@@ -107,14 +98,9 @@ public class SecurityConfig {
                         )
                         .permitAll()
 
-
                         // =========================
                         // BLOCKCHAIN
                         // =========================
-
-                        // -------------------------
-                        // Blockchain status
-                        // -------------------------
 
                         .requestMatchers(
                                 HttpMethod.GET,
@@ -122,21 +108,11 @@ public class SecurityConfig {
                         )
                         .permitAll()
 
-
-                        // -------------------------
-                        // Blockchain contract info
-                        // -------------------------
-
                         .requestMatchers(
                                 HttpMethod.GET,
                                 "/api/blockchain/contract"
                         )
                         .permitAll()
-
-
-                        // -------------------------
-                        // Read blockchain identity
-                        // -------------------------
 
                         .requestMatchers(
                                 HttpMethod.GET,
@@ -144,21 +120,11 @@ public class SecurityConfig {
                         )
                         .permitAll()
 
-
-                        // -------------------------
-                        // Anchor identity
-                        // -------------------------
-
                         .requestMatchers(
                                 HttpMethod.POST,
                                 "/api/blockchain/identity/anchor"
                         )
                         .permitAll()
-
-
-                        // -------------------------
-                        // Generate identity hash
-                        // -------------------------
 
                         .requestMatchers(
                                 HttpMethod.GET,
@@ -166,28 +132,17 @@ public class SecurityConfig {
                         )
                         .permitAll()
 
-
-                        // -------------------------
-                        // Anchor credential
-                        // -------------------------
-
                         .requestMatchers(
                                 HttpMethod.POST,
                                 "/api/blockchain/credential/anchor"
                         )
                         .permitAll()
 
-
-                        // -------------------------
-                        // Read blockchain credential
-                        // -------------------------
-
                         .requestMatchers(
                                 HttpMethod.GET,
                                 "/api/blockchain/credential/**"
                         )
                         .permitAll()
-
 
                         // =========================
                         // USER APIs
@@ -216,7 +171,6 @@ public class SecurityConfig {
                                 "/api/users/**"
                         )
                         .hasAuthority("USER_SUSPEND")
-
 
                         // =========================
                         // IDENTITY APIs
@@ -270,12 +224,10 @@ public class SecurityConfig {
                         )
                         .hasAuthority("IDENTITY_UPDATE")
 
-
                         // =========================
                         // CREDENTIAL APIs
                         // =========================
 
-                        // Verify / validate credential
                         .requestMatchers(
                                 HttpMethod.GET,
                                 "/api/credentials/*/verify",
@@ -283,46 +235,98 @@ public class SecurityConfig {
                         )
                         .hasAuthority("CREDENTIAL_VERIFY")
 
-
-                        // Read credentials
                         .requestMatchers(
                                 HttpMethod.GET,
                                 "/api/credentials/**"
                         )
                         .hasAuthority("CREDENTIAL_READ")
 
-
-                        // Create credential
                         .requestMatchers(
                                 HttpMethod.POST,
                                 "/api/credentials"
                         )
                         .hasAuthority("CREDENTIAL_CREATE")
 
-
-                        // Revoke credential
                         .requestMatchers(
                                 HttpMethod.PUT,
                                 "/api/credentials/*/revoke"
                         )
                         .hasAuthority("CREDENTIAL_REVOKE")
 
-
-                        // Reactivate credential
                         .requestMatchers(
                                 HttpMethod.PUT,
                                 "/api/credentials/*/reactivate"
                         )
                         .hasAuthority("CREDENTIAL_UPDATE")
 
-
-                        // Expire credential
                         .requestMatchers(
                                 HttpMethod.PUT,
                                 "/api/credentials/*/expire"
                         )
                         .hasAuthority("CREDENTIAL_UPDATE")
 
+                        // =========================
+                        // DIGITAL ASSET APIs
+                        // =========================
+
+                        // Verify asset hash
+                        // IMPORTANT: must come BEFORE
+                        // the general GET /api/assets/** rule.
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/assets/*/verify"
+                        )
+                        .hasAuthority("ASSET_VERIFY")
+
+                        // Read assets
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/assets",
+                                "/api/assets/**"
+                        )
+                        .hasAuthority("ASSET_READ")
+
+                        // Create asset
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/api/assets"
+                        )
+                        .hasAuthority("ASSET_CREATE")
+
+                        // Update asset
+                        .requestMatchers(
+                                HttpMethod.PUT,
+                                "/api/assets/*"
+                        )
+                        .hasAuthority("ASSET_UPDATE")
+
+                        // Assign asset
+                        .requestMatchers(
+                                HttpMethod.PUT,
+                                "/api/assets/*/assign"
+                        )
+                        .hasAuthority("ASSET_ASSIGN")
+
+                        // Transfer asset
+                        .requestMatchers(
+                                HttpMethod.PUT,
+                                "/api/assets/*/transfer"
+                        )
+                        .hasAuthority("ASSET_TRANSFER")
+
+                        // Revoke asset
+                        .requestMatchers(
+                                HttpMethod.PUT,
+                                "/api/assets/*/revoke"
+                        )
+                        .hasAuthority("ASSET_REVOKE")
+
+                        // Restore asset
+                        .requestMatchers(
+                                HttpMethod.PUT,
+                                "/api/assets/*/restore"
+                        )
+                        .hasAuthority("ASSET_UPDATE")
 
                         // =========================
                         // EVERYTHING ELSE
@@ -332,7 +336,6 @@ public class SecurityConfig {
                         .authenticated()
                 )
 
-
                 // =========================
                 // JWT FILTER
                 // =========================
@@ -341,7 +344,6 @@ public class SecurityConfig {
                         jwtAuthenticationFilter,
                         UsernamePasswordAuthenticationFilter.class
                 )
-
 
                 // =========================
                 // WEBAUTHN CONFIGURATION
@@ -354,7 +356,6 @@ public class SecurityConfig {
                                 "http://localhost:8080"
                         )
                 );
-
 
         return http.build();
     }
