@@ -1,41 +1,72 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../api/client";
-import { ShieldCheck, Activity, Cpu, Server, Link, Database, Terminal, CheckCircle2 } from "lucide-react";
+import { ShieldCheck, Activity, Cpu, Server, Link, Database, Terminal, CheckCircle2, RefreshCw, Copy, Check, ShieldAlert } from "lucide-react";
+import { TamperSimulationModal } from "../components/TamperSimulationModal";
 
 export function BlockchainPage() {
   const [status, setStatus] = useState<any>(null);
   const [txs, setTxs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [copiedHash, setCopiedHash] = useState<string | null>(null);
+  const [isSimulationOpen, setIsSimulationOpen] = useState(false);
+
+  const load = async () => {
+    setIsRefreshing(true);
+    try {
+      const [s, t] = await Promise.all([
+        api.get("/blockchain/status"),
+        api.get("/blockchain/transactions")
+      ]);
+      setStatus(s);
+      setTxs(t);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+      setIsRefreshing(false);
+    }
+  };
 
   useEffect(() => {
-    async function load() {
-      try {
-        const [s, t] = await Promise.all([
-          api.get("/blockchain/status"),
-          api.get("/blockchain/transactions")
-        ]);
-        setStatus(s);
-        setTxs(t);
-      } catch (e) {
-        console.error(e);
-      } finally {
-        setLoading(false);
-      }
-    }
     load();
   }, []);
+
+  const handleCopy = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedHash(text);
+    setTimeout(() => setCopiedHash(null), 2000);
+  };
 
   return (
     <div className="space-y-8 pb-12">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">Blockchain Explorer</h1>
           <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">AegisID EVM Smart Contract & Immutable Anchor Ledger</p>
         </div>
-        <div className="flex items-center space-x-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
-          <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.8)]"></div>
-          <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-widest">Network Live</span>
+        <div className="flex items-center space-x-3">
+          <button
+            onClick={() => setIsSimulationOpen(true)}
+            className="flex items-center space-x-2 px-4 py-2 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 text-red-600 dark:text-red-400 rounded-xl hover:bg-red-100 dark:hover:bg-red-500/20 transition-colors text-sm font-semibold"
+            title="Run Integrity Tamper Simulation"
+          >
+            <ShieldAlert className="w-4 h-4" />
+            <span className="hidden sm:inline">Simulate Tamper</span>
+          </button>
+          <button
+            onClick={load}
+            disabled={isRefreshing}
+            className="p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-white bg-white dark:bg-[#0d0d0f] border border-slate-200 dark:border-white/10 rounded-xl transition-colors disabled:opacity-50"
+            title="Refresh Network Status"
+          >
+            <RefreshCw className={`w-5 h-5 ${isRefreshing ? 'animate-spin text-blue-500' : ''}`} />
+          </button>
+          <div className="flex items-center space-x-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
+            <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.8)]"></div>
+            <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-widest">Network Live</span>
+          </div>
         </div>
       </div>
 
@@ -190,8 +221,15 @@ export function BlockchainPage() {
                           <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">{t.blockchainOperation}</span>
                         </div>
                       </td>
-                      <td className="p-4 text-xs text-slate-600 dark:text-slate-400">{t.entityType} #{t.entityId}</td>
-                      <td className="p-4 font-mono text-[11px] text-blue-600 dark:text-blue-400 truncate max-w-[140px] group-hover:text-blue-500 transition-colors">{t.transactionHash}</td>
+                      <td className="p-4 text-xs text-slate-600 dark:text-slate-400 font-medium capitalize">{t.entityType} #{t.entityId}</td>
+                      <td className="p-4">
+                        <div className="flex items-center space-x-2 group/copy cursor-pointer" onClick={() => handleCopy(t.transactionHash)}>
+                          <span className="font-mono text-xs text-blue-600 dark:text-blue-400 truncate max-w-[140px] transition-colors">{t.transactionHash}</span>
+                          <button className="text-slate-400 opacity-0 group-hover/copy:opacity-100 transition-opacity hover:text-slate-600 dark:hover:text-white">
+                            {copiedHash === t.transactionHash ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+                          </button>
+                        </div>
+                      </td>
                       <td className="p-4 font-mono text-xs text-slate-500">#{t.blockNumber}</td>
                       <td className="p-4">
                         <span className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20">
@@ -207,6 +245,12 @@ export function BlockchainPage() {
           </div>
         </div>
       </div>
+      
+      <TamperSimulationModal 
+        isOpen={isSimulationOpen} 
+        onClose={() => setIsSimulationOpen(false)} 
+        latestTx={txs && txs.length > 0 ? txs[0] : null} 
+      />
     </div>
   );
 }

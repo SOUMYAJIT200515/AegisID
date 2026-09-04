@@ -10,8 +10,8 @@
       "fullName": "Aegis Master Admin",
       "status": "ACTIVE",
       "role": "SUPER_ADMIN",
-      "createdAt": "2026-09-04T16:10:05.453Z",
-      "updatedAt": "2026-09-04T16:10:05.455Z"
+      "createdAt": "2026-09-04T17:28:24.560Z",
+      "updatedAt": "2026-09-04T17:28:24.562Z"
     },
     {
       "id": 2,
@@ -23,8 +23,8 @@
       "fullName": "System Admin",
       "status": "ACTIVE",
       "role": "ADMIN",
-      "createdAt": "2026-09-04T16:10:05.455Z",
-      "updatedAt": "2026-09-04T16:10:05.455Z"
+      "createdAt": "2026-09-04T17:28:24.562Z",
+      "updatedAt": "2026-09-04T17:28:24.562Z"
     },
     {
       "id": 3,
@@ -36,8 +36,8 @@
       "fullName": "Credential Issuer Officer",
       "status": "ACTIVE",
       "role": "ISSUER",
-      "createdAt": "2026-09-04T16:10:05.455Z",
-      "updatedAt": "2026-09-04T16:10:05.455Z"
+      "createdAt": "2026-09-04T17:28:24.562Z",
+      "updatedAt": "2026-09-04T17:28:24.562Z"
     },
     {
       "id": 4,
@@ -49,8 +49,8 @@
       "fullName": "Security Verifier Agent",
       "status": "ACTIVE",
       "role": "VERIFIER",
-      "createdAt": "2026-09-04T16:10:05.455Z",
-      "updatedAt": "2026-09-04T16:10:05.455Z"
+      "createdAt": "2026-09-04T17:28:24.562Z",
+      "updatedAt": "2026-09-04T17:28:24.562Z"
     },
     {
       "id": 5,
@@ -62,8 +62,8 @@
       "fullName": "John Doe",
       "status": "ACTIVE",
       "role": "USER",
-      "createdAt": "2026-09-04T16:10:05.455Z",
-      "updatedAt": "2026-09-04T16:10:05.455Z"
+      "createdAt": "2026-09-04T17:28:24.562Z",
+      "updatedAt": "2026-09-04T17:28:24.562Z"
     },
     {
       "id": 6,
@@ -76,8 +76,8 @@
       "password": "soumya1",
       "status": "ACTIVE",
       "role": "USER",
-      "createdAt": "2026-09-04T16:11:29.757Z",
-      "updatedAt": "2026-09-04T16:11:29.757Z"
+      "createdAt": "2026-09-04T17:29:53.090Z",
+      "updatedAt": "2026-09-04T17:29:53.090Z"
     }
   ],
   "organizations": [
@@ -320,8 +320,8 @@
       "verificationStatus": "VERIFIED",
       "identityStatus": "ACTIVE",
       "identityHash": "0xa1b2c3d4e5f67890123456789abcdef0123456789abcdef0123456789abcdef0",
-      "createdAt": "2026-09-04T16:10:05.455Z",
-      "updatedAt": "2026-09-04T16:10:05.455Z"
+      "createdAt": "2026-09-04T17:28:24.562Z",
+      "updatedAt": "2026-09-04T17:28:24.562Z"
     }
   ],
   "credentials": [
@@ -332,8 +332,8 @@
       "credentialType": "DigitalPassportCredential",
       "credentialHash": "0xb2c3d4e5f6a17890123456789abcdef0123456789abcdef0123456789abcdef1",
       "status": "ACTIVE",
-      "issuedAt": "2026-09-04T16:10:05.455Z",
-      "expiresAt": "2027-09-04T16:10:05.455Z",
+      "issuedAt": "2026-09-04T17:28:24.563Z",
+      "expiresAt": "2027-09-04T17:28:24.563Z",
       "blockchainTxHash": "0x9876543210abcdef9876543210abcdef9876543210abcdef9876543210abcdef"
     }
   ],
@@ -347,7 +347,7 @@
       "ownerAddress": "0x71C359918E7E91c667104b90C5b0C627c54143a5",
       "status": "ACTIVE",
       "blockchainTxHash": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
-      "createdAt": "2026-09-04T16:10:05.455Z"
+      "createdAt": "2026-09-04T17:28:24.563Z"
     }
   ],
   "blockchainTransactions": [
@@ -359,7 +359,7 @@
       "blockchainOperation": "ANCHOR_CREDENTIAL",
       "status": "SUCCESS",
       "blockNumber": 142850,
-      "timestamp": "2026-09-04T16:10:05.455Z",
+      "timestamp": "2026-09-04T17:28:24.563Z",
       "errorMessage": null
     },
     {
@@ -370,38 +370,28 @@
       "blockchainOperation": "ANCHOR_ASSET",
       "status": "SUCCESS",
       "blockNumber": 142851,
-      "timestamp": "2026-09-04T16:10:05.455Z",
+      "timestamp": "2026-09-04T17:28:24.563Z",
       "errorMessage": null
     }
   ],
   "auditLogs": [
     {
-      "id": 6,
+      "id": 5,
       "username": "s",
       "action": "LOGIN",
       "entityType": "USER",
       "entityId": "6",
-      "timestamp": "2026-09-04T16:11:36.668Z",
-      "result": "SUCCESS",
-      "ipAddress": "127.0.0.1"
-    },
-    {
-      "id": 5,
-      "username": "admin",
-      "action": "USER_CREATE",
-      "entityType": "USER",
-      "entityId": "6",
-      "timestamp": "2026-09-04T16:11:29.759Z",
+      "timestamp": "2026-09-04T17:30:06.834Z",
       "result": "SUCCESS",
       "ipAddress": "127.0.0.1"
     },
     {
       "id": 4,
-      "username": "superadmin",
-      "action": "LOGIN",
+      "username": "admin",
+      "action": "USER_CREATE",
       "entityType": "USER",
-      "entityId": "1",
-      "timestamp": "2026-09-04T16:11:00.633Z",
+      "entityId": "6",
+      "timestamp": "2026-09-04T17:29:53.094Z",
       "result": "SUCCESS",
       "ipAddress": "127.0.0.1"
     },
@@ -411,7 +401,7 @@
       "action": "LOGIN",
       "entityType": "USER",
       "entityId": "1",
-      "timestamp": "2026-09-04T16:10:37.346Z",
+      "timestamp": "2026-09-04T17:29:16.288Z",
       "result": "SUCCESS",
       "ipAddress": "127.0.0.1"
     },
@@ -421,7 +411,7 @@
       "action": "LOGIN",
       "entityType": "USER",
       "entityId": "1",
-      "timestamp": "2026-09-04T16:10:05.455Z",
+      "timestamp": "2026-09-04T17:28:24.563Z",
       "result": "SUCCESS",
       "ipAddress": "127.0.0.1"
     },
@@ -431,7 +421,7 @@
       "action": "CREDENTIAL_CREATED",
       "entityType": "CREDENTIAL",
       "entityId": "1",
-      "timestamp": "2026-09-04T16:10:05.455Z",
+      "timestamp": "2026-09-04T17:28:24.563Z",
       "result": "SUCCESS",
       "ipAddress": "127.0.0.1"
     }

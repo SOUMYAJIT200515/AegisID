@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
-import { Sun, Moon, Megaphone } from "lucide-react";
+import { Megaphone, Sun, Moon } from "lucide-react";
 import { NotificationDropdown } from "./NotificationDropdown";
 import { ProfileDropdown } from "./ProfileDropdown";
 import { ComposeNotificationModal } from "./ComposeNotificationModal";
