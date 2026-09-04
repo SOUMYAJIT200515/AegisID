@@ -1,0 +1,6 @@
+{
+  "name": "AegisID",
+  "description": "Blockchain-Based Secure Platform for Identity, Access Control, and Digital Asset Management",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,439 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "organizationId": 1,
+      "departmentId": 1,
+      "employeeCode": "EMP-001",
+      "username": "superadmin",
+      "email": "superadmin@aegisid.io",
+      "fullName": "Aegis Master Admin",
+      "status": "ACTIVE",
+      "role": "SUPER_ADMIN",
+      "createdAt": "2026-09-04T16:10:05.453Z",
+      "updatedAt": "2026-09-04T16:10:05.455Z"
+    },
+    {
+      "id": 2,
+      "organizationId": 1,
+      "departmentId": 1,
+      "employeeCode": "EMP-002",
+      "username": "admin",
+      "email": "admin@aegisid.io",
+      "fullName": "System Admin",
+      "status": "ACTIVE",
+      "role": "ADMIN",
+      "createdAt": "2026-09-04T16:10:05.455Z",
+      "updatedAt": "2026-09-04T16:10:05.455Z"
+    },
+    {
+      "id": 3,
+      "organizationId": 2,
+      "departmentId": 2,
+      "employeeCode": "EMP-003",
+      "username": "issuer",
+      "email": "issuer@gov.auth",
+      "fullName": "Credential Issuer Officer",
+      "status": "ACTIVE",
+      "role": "ISSUER",
+      "createdAt": "2026-09-04T16:10:05.455Z",
+      "updatedAt": "2026-09-04T16:10:05.455Z"
+    },
+    {
+      "id": 4,
+      "organizationId": 3,
+      "departmentId": 3,
+      "employeeCode": "EMP-004",
+      "username": "verifier",
+      "email": "verifier@verify.org",
+      "fullName": "Security Verifier Agent",
+      "status": "ACTIVE",
+      "role": "VERIFIER",
+      "createdAt": "2026-09-04T16:10:05.455Z",
+      "updatedAt": "2026-09-04T16:10:05.455Z"
+    },
+    {
+      "id": 5,
+      "organizationId": 4,
+      "departmentId": 4,
+      "employeeCode": "EMP-005",
+      "username": "johndoe",
+      "email": "john.doe@techcorp.com",
+      "fullName": "John Doe",
+      "status": "ACTIVE",
+      "role": "USER",
+      "createdAt": "2026-09-04T16:10:05.455Z",
+      "updatedAt": "2026-09-04T16:10:05.455Z"
+    },
+    {
+      "id": 6,
+      "organizationId": 1,
+      "departmentId": 1,
+      "employeeCode": "EMP-15",
+      "username": "s",
+      "email": "soumyajitsaha.miit@gmail.com",
+      "fullName": "Soumyajit",
+      "password": "soumya1",
+      "status": "ACTIVE",
+      "role": "USER",
+      "createdAt": "2026-09-04T16:11:29.757Z",
+      "updatedAt": "2026-09-04T16:11:29.757Z"
+    }
+  ],
+  "organizations": [
+    {
+      "id": 1,
+      "name": "Aegis Global Foundation",
+      "code": "AEGIS",
+      "country": "Switzerland",
+      "status": "ACTIVE"
+    },
+    {
+      "id": 2,
+      "name": "National Identity Authority",
+      "code": "NIA",
+      "country": "United States",
+      "status": "ACTIVE"
+    },
+    {
+      "id": 3,
+      "name": "Global Security Agency",
+      "code": "GSA",
+      "country": "United Kingdom",
+      "status": "ACTIVE"
+    },
+    {
+      "id": 4,
+      "name": "TechCorp Global Ltd",
+      "code": "TECH",
+      "country": "Singapore",
+      "status": "ACTIVE"
+    }
+  ],
+  "departments": [
+    {
+      "id": 1,
+      "organizationId": 1,
+      "name": "Core Architecture",
+      "code": "CORE"
+    },
+    {
+      "id": 2,
+      "organizationId": 2,
+      "name": "Credential Issuance Bureau",
+      "code": "CIB"
+    },
+    {
+      "id": 3,
+      "organizationId": 3,
+      "name": "Verification & Compliance",
+      "code": "VC"
+    },
+    {
+      "id": 4,
+      "organizationId": 4,
+      "name": "Engineering & IT",
+      "code": "ENG"
+    }
+  ],
+  "roles": [
+    {
+      "id": 1,
+      "name": "SUPER_ADMIN",
+      "description": "Full system access & administration"
+    },
+    {
+      "id": 2,
+      "name": "ADMIN",
+      "description": "Management of users, orgs, and policies"
+    },
+    {
+      "id": 3,
+      "name": "ISSUER",
+      "description": "Issue and revoke verifiable credentials"
+    },
+    {
+      "id": 4,
+      "name": "VERIFIER",
+      "description": "Perform cryptographic & blockchain verification"
+    },
+    {
+      "id": 5,
+      "name": "USER",
+      "description": "Standard user identity & digital asset holder"
+    }
+  ],
+  "permissions": [
+    {
+      "id": 1,
+      "name": "USER_READ"
+    },
+    {
+      "id": 2,
+      "name": "USER_CREATE"
+    },
+    {
+      "id": 3,
+      "name": "USER_UPDATE"
+    },
+    {
+      "id": 4,
+      "name": "USER_DELETE"
+    },
+    {
+      "id": 5,
+      "name": "ROLE_READ"
+    },
+    {
+      "id": 6,
+      "name": "ROLE_CREATE"
+    },
+    {
+      "id": 7,
+      "name": "ROLE_UPDATE"
+    },
+    {
+      "id": 8,
+      "name": "ROLE_DELETE"
+    },
+    {
+      "id": 9,
+      "name": "PERMISSION_READ"
+    },
+    {
+      "id": 10,
+      "name": "IDENTITY_READ"
+    },
+    {
+      "id": 11,
+      "name": "IDENTITY_CREATE"
+    },
+    {
+      "id": 12,
+      "name": "IDENTITY_VERIFY"
+    },
+    {
+      "id": 13,
+      "name": "IDENTITY_SUSPEND"
+    },
+    {
+      "id": 14,
+      "name": "IDENTITY_REVOKED"
+    },
+    {
+      "id": 15,
+      "name": "CREDENTIAL_READ"
+    },
+    {
+      "id": 16,
+      "name": "CREDENTIAL_CREATE"
+    },
+    {
+      "id": 17,
+      "name": "CREDENTIAL_VERIFY"
+    },
+    {
+      "id": 18,
+      "name": "CREDENTIAL_REVOKE"
+    },
+    {
+      "id": 19,
+      "name": "ASSET_READ"
+    },
+    {
+      "id": 20,
+      "name": "ASSET_CREATE"
+    },
+    {
+      "id": 21,
+      "name": "ASSET_UPDATE"
+    },
+    {
+      "id": 22,
+      "name": "ASSET_DELETE"
+    },
+    {
+      "id": 23,
+      "name": "BLOCKCHAIN_READ"
+    },
+    {
+      "id": 24,
+      "name": "BLOCKCHAIN_WRITE"
+    },
+    {
+      "id": 25,
+      "name": "AUDIT_READ"
+    }
+  ],
+  "rolePermissions": [
+    {
+      "roleId": 1,
+      "permissionId": 1
+    },
+    {
+      "roleId": 1,
+      "permissionId": 2
+    },
+    {
+      "roleId": 1,
+      "permissionId": 3
+    },
+    {
+      "roleId": 1,
+      "permissionId": 4
+    },
+    {
+      "roleId": 1,
+      "permissionId": 11
+    },
+    {
+      "roleId": 1,
+      "permissionId": 12
+    },
+    {
+      "roleId": 1,
+      "permissionId": 16
+    },
+    {
+      "roleId": 1,
+      "permissionId": 18
+    },
+    {
+      "roleId": 1,
+      "permissionId": 20
+    },
+    {
+      "roleId": 1,
+      "permissionId": 24
+    },
+    {
+      "roleId": 1,
+      "permissionId": 25
+    }
+  ],
+  "identities": [
+    {
+      "id": 1,
+      "userId": 5,
+      "did": "did:aegis:techcorp:5f8d9b1a2c3e4f6",
+      "walletAddress": "0x71C359918E7E91c667104b90C5b0C627c54143a5",
+      "verificationStatus": "VERIFIED",
+      "identityStatus": "ACTIVE",
+      "identityHash": "0xa1b2c3d4e5f67890123456789abcdef0123456789abcdef0123456789abcdef0",
+      "createdAt": "2026-09-04T16:10:05.455Z",
+      "updatedAt": "2026-09-04T16:10:05.455Z"
+    }
+  ],
+  "credentials": [
+    {
+      "id": 1,
+      "identityId": 1,
+      "issuerId": 3,
+      "credentialType": "DigitalPassportCredential",
+      "credentialHash": "0xb2c3d4e5f6a17890123456789abcdef0123456789abcdef0123456789abcdef1",
+      "status": "ACTIVE",
+      "issuedAt": "2026-09-04T16:10:05.455Z",
+      "expiresAt": "2027-09-04T16:10:05.455Z",
+      "blockchainTxHash": "0x9876543210abcdef9876543210abcdef9876543210abcdef9876543210abcdef"
+    }
+  ],
+  "assets": [
+    {
+      "id": 1,
+      "userId": 5,
+      "assetName": "Secure Enterprise IP Certificate #402",
+      "assetType": "IntellectualProperty",
+      "assetHash": "0xc3d4e5f6a1b27890123456789abcdef0123456789abcdef0123456789abcdef2",
+      "ownerAddress": "0x71C359918E7E91c667104b90C5b0C627c54143a5",
+      "status": "ACTIVE",
+      "blockchainTxHash": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+      "createdAt": "2026-09-04T16:10:05.455Z"
+    }
+  ],
+  "blockchainTransactions": [
+    {
+      "id": 1,
+      "transactionHash": "0x9876543210abcdef9876543210abcdef9876543210abcdef9876543210abcdef",
+      "entityType": "CREDENTIAL",
+      "entityId": "1",
+      "blockchainOperation": "ANCHOR_CREDENTIAL",
+      "status": "SUCCESS",
+      "blockNumber": 142850,
+      "timestamp": "2026-09-04T16:10:05.455Z",
+      "errorMessage": null
+    },
+    {
+      "id": 2,
+      "transactionHash": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+      "entityType": "ASSET",
+      "entityId": "1",
+      "blockchainOperation": "ANCHOR_ASSET",
+      "status": "SUCCESS",
+      "blockNumber": 142851,
+      "timestamp": "2026-09-04T16:10:05.455Z",
+      "errorMessage": null
+    }
+  ],
+  "auditLogs": [
+    {
+      "id": 6,
+      "username": "s",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "6",
+      "timestamp": "2026-09-04T16:11:36.668Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 5,
+      "username": "admin",
+      "action": "USER_CREATE",
+      "entityType": "USER",
+      "entityId": "6",
+      "timestamp": "2026-09-04T16:11:29.759Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 4,
+      "username": "superadmin",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "1",
+      "timestamp": "2026-09-04T16:11:00.633Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 3,
+      "username": "superadmin",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "1",
+      "timestamp": "2026-09-04T16:10:37.346Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 1,
+      "username": "superadmin",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "1",
+      "timestamp": "2026-09-04T16:10:05.455Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 2,
+      "username": "issuer",
+      "action": "CREDENTIAL_CREATED",
+      "entityType": "CREDENTIAL",
+      "entityId": "1",
+      "timestamp": "2026-09-04T16:10:05.455Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    }
+  ]
+}
