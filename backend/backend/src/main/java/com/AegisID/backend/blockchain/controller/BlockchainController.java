@@ -1,12 +1,10 @@
 package com.AegisID.backend.blockchain.controller;
 
 import com.AegisID.backend.blockchain.service.BlockchainService;
+import com.AegisID.backend.blockchain.service.BlockchainVerificationService;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigInteger;
 import java.util.HashMap;
@@ -18,15 +16,28 @@ import java.util.Map;
 public class BlockchainController {
 
     private final BlockchainService blockchainService;
+    private final BlockchainVerificationService blockchainVerificationService;
 
-    public BlockchainController(BlockchainService blockchainService) {
-        this.blockchainService = blockchainService;
+
+    // =========================================================
+    // CONSTRUCTOR
+    // =========================================================
+
+    public BlockchainController(
+            BlockchainService blockchainService,
+            BlockchainVerificationService blockchainVerificationService) {
+
+        this.blockchainService =
+                blockchainService;
+
+        this.blockchainVerificationService =
+                blockchainVerificationService;
     }
 
 
-    // =========================
+    // =========================================================
     // BLOCKCHAIN STATUS
-    // =========================
+    // =========================================================
 
     @GetMapping("/status")
     public ResponseEntity<Map<String, Object>> getBlockchainStatus()
@@ -41,17 +52,28 @@ public class BlockchainController {
         Map<String, Object> response =
                 new HashMap<>();
 
-        response.put("connected", true);
-        response.put("networkVersion", networkVersion);
-        response.put("blockNumber", blockNumber);
+        response.put(
+                "connected",
+                true
+        );
+
+        response.put(
+                "networkVersion",
+                networkVersion
+        );
+
+        response.put(
+                "blockNumber",
+                blockNumber
+        );
 
         return ResponseEntity.ok(response);
     }
 
 
-    // =========================
+    // =========================================================
     // CONTRACT INFORMATION
-    // =========================
+    // =========================================================
 
     @GetMapping("/contract")
     public ResponseEntity<Map<String, Object>> getContractStatus() {
@@ -73,9 +95,9 @@ public class BlockchainController {
     }
 
 
-    // =========================
-    // READ IDENTITY
-    // =========================
+    // =========================================================
+    // READ IDENTITY FROM BLOCKCHAIN
+    // =========================================================
 
     @GetMapping("/identity/{identityHash}")
     public ResponseEntity<?> getIdentity(
@@ -83,10 +105,18 @@ public class BlockchainController {
             throws Exception {
 
         List<?> result =
-                blockchainService.getIdentity(identityHash);
+                blockchainService.getIdentity(
+                        identityHash
+                );
 
         return ResponseEntity.ok(result);
     }
+
+
+    // =========================================================
+    // ANCHOR IDENTITY
+    // =========================================================
+
     @PostMapping("/identity/anchor")
     public ResponseEntity<?> anchorIdentity(
             @RequestParam String identityHash,
@@ -99,18 +129,41 @@ public class BlockchainController {
                         walletAddress
                 );
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("success", true);
-        response.put("message", "Identity anchored successfully");
-        response.put("transactionHash", transactionHash);
-        response.put("identityHash", identityHash);
-        response.put("walletAddress", walletAddress);
+        Map<String, Object> response =
+                new HashMap<>();
+
+        response.put(
+                "success",
+                true
+        );
+
+        response.put(
+                "message",
+                "Identity anchored successfully"
+        );
+
+        response.put(
+                "transactionHash",
+                transactionHash
+        );
+
+        response.put(
+                "identityHash",
+                identityHash
+        );
+
+        response.put(
+                "walletAddress",
+                walletAddress
+        );
 
         return ResponseEntity.ok(response);
     }
+
+
     // =========================================================
-// ANCHOR CREDENTIAL
-// =========================================================
+    // ANCHOR CREDENTIAL
+    // =========================================================
 
     @PostMapping("/credential/anchor")
     public ResponseEntity<?> anchorCredential(
@@ -156,9 +209,9 @@ public class BlockchainController {
     }
 
 
-// =========================================================
-// READ CREDENTIAL
-// =========================================================
+    // =========================================================
+    // READ CREDENTIAL FROM BLOCKCHAIN
+    // =========================================================
 
     @GetMapping("/credential/{credentialHash}")
     public ResponseEntity<?> getCredential(
@@ -169,6 +222,25 @@ public class BlockchainController {
                 blockchainService.getCredential(
                         credentialHash
                 );
+
+        return ResponseEntity.ok(result);
+    }
+
+
+    // =========================================================
+    // VERIFY CREDENTIAL AGAINST BLOCKCHAIN
+    // =========================================================
+
+    @GetMapping("/credential/{credentialId}/verify")
+    public ResponseEntity<?> verifyCredentialOnBlockchain(
+            @PathVariable Long credentialId)
+            throws Exception {
+
+        Map<String, Object> result =
+                blockchainVerificationService
+                        .verifyCredentialOnBlockchain(
+                                credentialId
+                        );
 
         return ResponseEntity.ok(result);
     }

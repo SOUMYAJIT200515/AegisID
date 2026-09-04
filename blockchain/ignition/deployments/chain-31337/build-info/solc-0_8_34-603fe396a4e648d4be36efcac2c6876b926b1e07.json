@@ -1,0 +1,49 @@
+{
+  "_format": "hh3-sol-build-info-1",
+  "id": "solc-0_8_34-603fe396a4e648d4be36efcac2c6876b926b1e07",
+  "solcVersion": "0.8.34",
+  "solcLongVersion": "0.8.34+commit.80d5c536",
+  "compilerType": "solc",
+  "toolVersions": {
+    "hardhat": "3.15.0"
+  },
+  "userSourceNameMap": {
+    "contracts/AegisIDRegistry.sol": "project/contracts/AegisIDRegistry.sol"
+  },
+  "input": {
+    "language": "Solidity",
+    "settings": {
+      "evmVersion": "osaka",
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "outputSelection": {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "evm.bytecode.linkReferences",
+            "evm.bytecode.object",
+            "evm.bytecode.opcodes",
+            "evm.bytecode.sourceMap",
+            "evm.deployedBytecode.immutableReferences",
+            "evm.deployedBytecode.linkReferences",
+            "evm.deployedBytecode.object",
+            "evm.deployedBytecode.opcodes",
+            "evm.deployedBytecode.sourceMap",
+            "evm.methodIdentifiers"
+          ]
+        }
+      },
+      "remappings": []
+    },
+    "sources": {
+      "project/contracts/AegisIDRegistry.sol": {
+        "content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.24;\r\n\r\ncontract AegisIDRegistry {\r\n\r\n    struct IdentityRecord {\r\n        bytes32 identityHash;\r\n        address walletAddress;\r\n        uint256 timestamp;\r\n        bool active;\r\n    }\r\n\r\n    struct CredentialRecord {\r\n        bytes32 credentialHash;\r\n        bytes32 identityHash;\r\n        address issuer;\r\n        uint256 timestamp;\r\n        bool active;\r\n    }\r\n\r\n    mapping(bytes32 => IdentityRecord) private identities;\r\n    mapping(bytes32 => CredentialRecord) private credentials;\r\n\r\n    event IdentityAnchored(\r\n        bytes32 indexed identityHash,\r\n        address indexed walletAddress,\r\n        uint256 timestamp\r\n    );\r\n\r\n    event CredentialAnchored(\r\n        bytes32 indexed credentialHash,\r\n        bytes32 indexed identityHash,\r\n        address indexed issuer,\r\n        uint256 timestamp\r\n    );\r\n\r\n    event IdentityStatusUpdated(\r\n        bytes32 indexed identityHash,\r\n        bool active\r\n    );\r\n\r\n    event CredentialStatusUpdated(\r\n        bytes32 indexed credentialHash,\r\n        bool active\r\n    );\r\n\r\n    function anchorIdentity(\r\n        bytes32 identityHash,\r\n        address walletAddress\r\n    ) external {\r\n\r\n        require(\r\n            identityHash != bytes32(0),\r\n            \"Invalid identity hash\"\r\n        );\r\n\r\n        require(\r\n            identities[identityHash].timestamp == 0,\r\n            \"Identity already anchored\"\r\n        );\r\n\r\n        identities[identityHash] = IdentityRecord({\r\n            identityHash: identityHash,\r\n            walletAddress: walletAddress,\r\n            timestamp: block.timestamp,\r\n            active: true\r\n        });\r\n\r\n        emit IdentityAnchored(\r\n            identityHash,\r\n            walletAddress,\r\n            block.timestamp\r\n        );\r\n    }\r\n\r\n    function anchorCredential(\r\n        bytes32 credentialHash,\r\n        bytes32 identityHash\r\n    ) external {\r\n\r\n        require(\r\n            credentialHash != bytes32(0),\r\n            \"Invalid credential hash\"\r\n        );\r\n\r\n        require(\r\n            identityHash != bytes32(0),\r\n            \"Invalid identity hash\"\r\n        );\r\n\r\n        require(\r\n            credentials[credentialHash].timestamp == 0,\r\n            \"Credential already anchored\"\r\n        );\r\n\r\n        credentials[credentialHash] = CredentialRecord({\r\n            credentialHash: credentialHash,\r\n            identityHash: identityHash,\r\n            issuer: msg.sender,\r\n            timestamp: block.timestamp,\r\n            active: true\r\n        });\r\n\r\n        emit CredentialAnchored(\r\n            credentialHash,\r\n            identityHash,\r\n            msg.sender,\r\n            block.timestamp\r\n        );\r\n    }\r\n\r\n    function getIdentity(\r\n        bytes32 identityHash\r\n    )\r\n        external\r\n        view\r\n        returns (\r\n            bytes32,\r\n            address,\r\n            uint256,\r\n            bool\r\n        )\r\n    {\r\n        IdentityRecord memory record =\r\n            identities[identityHash];\r\n\r\n        return (\r\n            record.identityHash,\r\n            record.walletAddress,\r\n            record.timestamp,\r\n            record.active\r\n        );\r\n    }\r\n\r\n    function getCredential(\r\n        bytes32 credentialHash\r\n    )\r\n        external\r\n        view\r\n        returns (\r\n            bytes32,\r\n            bytes32,\r\n            address,\r\n            uint256,\r\n            bool\r\n        )\r\n    {\r\n        CredentialRecord memory record =\r\n            credentials[credentialHash];\r\n\r\n        return (\r\n            record.credentialHash,\r\n            record.identityHash,\r\n            record.issuer,\r\n            record.timestamp,\r\n            record.active\r\n        );\r\n    }\r\n\r\n    function setIdentityStatus(\r\n        bytes32 identityHash,\r\n        bool active\r\n    ) external {\r\n\r\n        require(\r\n            identities[identityHash].timestamp != 0,\r\n            \"Identity not found\"\r\n        );\r\n\r\n        identities[identityHash].active = active;\r\n\r\n        emit IdentityStatusUpdated(\r\n            identityHash,\r\n            active\r\n        );\r\n    }\r\n\r\n    function setCredentialStatus(\r\n        bytes32 credentialHash,\r\n        bool active\r\n    ) external {\r\n\r\n        require(\r\n            credentials[credentialHash].timestamp != 0,\r\n            \"Credential not found\"\r\n        );\r\n\r\n        credentials[credentialHash].active = active;\r\n\r\n        emit CredentialStatusUpdated(\r\n            credentialHash,\r\n            active\r\n        );\r\n    }\r\n}\r\n"
+      }
+    }
+  }
+}
