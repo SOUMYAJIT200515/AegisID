@@ -244,4 +244,166 @@ public class BlockchainController {
 
         return ResponseEntity.ok(result);
     }
+
+
+    // =========================================================
+    // READ DIGITAL ASSET FROM BLOCKCHAIN
+    // =========================================================
+
+    @GetMapping("/asset/{assetHash}")
+    public ResponseEntity<?> getAsset(
+            @PathVariable String assetHash)
+            throws Exception {
+
+        List<?> result =
+                blockchainService.getAsset(
+                        assetHash
+                );
+
+        return ResponseEntity.ok(result);
+    }
+
+
+    // =========================================================
+    // ANCHOR DIGITAL ASSET
+    // =========================================================
+
+    @PostMapping("/asset/anchor")
+    public ResponseEntity<?> anchorAsset(
+            @RequestParam String assetHash,
+            @RequestParam String ownerAddress)
+            throws Exception {
+
+        String transactionHash =
+                blockchainService.anchorAsset(
+                        assetHash,
+                        ownerAddress
+                );
+
+        Map<String, Object> response =
+                new HashMap<>();
+
+        response.put(
+                "success",
+                true
+        );
+
+        response.put(
+                "message",
+                "Digital asset anchored successfully"
+        );
+
+        response.put(
+                "assetHash",
+                assetHash
+        );
+
+        response.put(
+                "ownerAddress",
+                ownerAddress
+        );
+
+        response.put(
+                "transactionHash",
+                transactionHash
+        );
+
+        return ResponseEntity.ok(response);
+    }
+
+
+    // =========================================================
+    // UPDATE DIGITAL ASSET STATUS ON BLOCKCHAIN
+    // =========================================================
+
+    @PutMapping("/asset/{assetHash}/status")
+    public ResponseEntity<?> setAssetStatus(
+            @PathVariable String assetHash,
+            @RequestParam boolean active)
+            throws Exception {
+
+        String transactionHash =
+                blockchainService.setAssetStatus(
+                        assetHash,
+                        active
+                );
+
+        Map<String, Object> response =
+                new HashMap<>();
+
+        response.put(
+                "success",
+                true
+        );
+
+        response.put(
+                "message",
+                "Digital asset status updated successfully"
+        );
+
+        response.put(
+                "assetHash",
+                assetHash
+        );
+
+        response.put(
+                "active",
+                active
+        );
+
+        response.put(
+                "transactionHash",
+                transactionHash
+        );
+
+        return ResponseEntity.ok(response);
+    }
+
+
+    // =========================================================
+    // UPDATE DIGITAL ASSET OWNER ON BLOCKCHAIN
+    // =========================================================
+
+    @PutMapping("/asset/{assetHash}/owner")
+    public ResponseEntity<?> updateAssetOwner(
+            @PathVariable String assetHash,
+            @RequestParam String newOwnerAddress)
+            throws Exception {
+
+        String transactionHash =
+                blockchainService.updateAssetOwner(
+                        assetHash,
+                        newOwnerAddress
+                );
+
+        Map<String, Object> response =
+                new HashMap<>();
+
+        response.put(
+                "success",
+                true
+        );
+
+        response.put(
+                "message",
+                "Digital asset owner updated successfully"
+        );
+
+        response.put(
+                "assetHash",
+                assetHash
+        );
+
+        response.put(
+                "newOwnerAddress",
+                newOwnerAddress
+        );
+
+        response.put(
+                "transactionHash",
+                transactionHash
+        );
+
+        return ResponseEntity.ok(response);
+    }
 }

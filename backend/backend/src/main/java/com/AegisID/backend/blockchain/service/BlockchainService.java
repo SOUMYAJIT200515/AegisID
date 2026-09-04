@@ -172,10 +172,6 @@ public class BlockchainService {
         validateWalletAddress(walletAddress);
 
 
-        // =========================================
-        // CREATE TRANSACTION RECORD
-        // =========================================
-
         BlockchainTransaction blockchainTransaction =
                 new BlockchainTransaction();
 
@@ -213,10 +209,6 @@ public class BlockchainService {
 
         try {
 
-            // =========================================
-            // LOAD BLOCKCHAIN ACCOUNT
-            // =========================================
-
             Credentials credentials =
                     Credentials.create(privateKey);
 
@@ -244,10 +236,6 @@ public class BlockchainService {
             );
 
 
-            // =========================================
-            // CREATE SOLIDITY FUNCTION
-            // =========================================
-
             Function function = new Function(
                     "anchorIdentity",
 
@@ -270,20 +258,12 @@ public class BlockchainService {
                     FunctionEncoder.encode(function);
 
 
-            // =========================================
-            // TRANSACTION MANAGER
-            // =========================================
-
             TransactionManager transactionManager =
                     new RawTransactionManager(
                             web3j,
                             credentials
                     );
 
-
-            // =========================================
-            // SEND TRANSACTION
-            // =========================================
 
             EthSendTransaction transaction =
                     transactionManager.sendTransaction(
@@ -294,10 +274,6 @@ public class BlockchainService {
                             BigInteger.ZERO
                     );
 
-
-            // =========================================
-            // CHECK SUBMISSION
-            // =========================================
 
             if (transaction.hasError()) {
 
@@ -333,17 +309,9 @@ public class BlockchainService {
             );
 
 
-            // =========================================
-            // WAIT FOR RECEIPT
-            // =========================================
-
             TransactionReceipt receipt =
                     waitForReceipt(transactionHash);
 
-
-            // =========================================
-            // CHECK RECEIPT
-            // =========================================
 
             if (!receipt.isStatusOK()) {
 
@@ -365,10 +333,6 @@ public class BlockchainService {
                 );
             }
 
-
-            // =========================================
-            // SAVE CONFIRMED TRANSACTION
-            // =========================================
 
             savedTransaction.setStatus(
                     BlockchainTransaction.TransactionStatus.CONFIRMED
@@ -394,10 +358,6 @@ public class BlockchainService {
             return transactionHash;
 
         } catch (Exception exception) {
-
-            // =========================================
-            // SAVE FAILURE
-            // =========================================
 
             if (savedTransaction.getStatus()
                     != BlockchainTransaction.TransactionStatus.CONFIRMED) {
@@ -496,10 +456,6 @@ public class BlockchainService {
         validateIdentityHash(identityHash);
 
 
-        // =========================================
-        // CREATE TRANSACTION RECORD
-        // =========================================
-
         BlockchainTransaction blockchainTransaction =
                 new BlockchainTransaction();
 
@@ -541,10 +497,6 @@ public class BlockchainService {
 
         try {
 
-            // =========================================
-            // LOAD BLOCKCHAIN ACCOUNT
-            // =========================================
-
             Credentials credentials =
                     Credentials.create(privateKey);
 
@@ -572,10 +524,6 @@ public class BlockchainService {
                     savedTransaction
             );
 
-
-            // =========================================
-            // CREATE SOLIDITY FUNCTION
-            // =========================================
 
             Function function = new Function(
                     "anchorCredential",
@@ -605,20 +553,12 @@ public class BlockchainService {
                     );
 
 
-            // =========================================
-            // TRANSACTION MANAGER
-            // =========================================
-
             TransactionManager transactionManager =
                     new RawTransactionManager(
                             web3j,
                             credentials
                     );
 
-
-            // =========================================
-            // SEND TRANSACTION
-            // =========================================
 
             EthSendTransaction transaction =
                     transactionManager.sendTransaction(
@@ -629,10 +569,6 @@ public class BlockchainService {
                             BigInteger.ZERO
                     );
 
-
-            // =========================================
-            // CHECK SUBMISSION
-            // =========================================
 
             if (transaction.hasError()) {
 
@@ -668,17 +604,9 @@ public class BlockchainService {
             );
 
 
-            // =========================================
-            // WAIT FOR RECEIPT
-            // =========================================
-
             TransactionReceipt receipt =
                     waitForReceipt(transactionHash);
 
-
-            // =========================================
-            // CHECK RECEIPT
-            // =========================================
 
             if (!receipt.isStatusOK()) {
 
@@ -700,10 +628,6 @@ public class BlockchainService {
                 );
             }
 
-
-            // =========================================
-            // SAVE CONFIRMED TRANSACTION
-            // =========================================
 
             savedTransaction.setStatus(
                     BlockchainTransaction.TransactionStatus.CONFIRMED
@@ -730,9 +654,295 @@ public class BlockchainService {
 
         } catch (Exception exception) {
 
-            // =========================================
-            // SAVE FAILURE
-            // =========================================
+            if (savedTransaction.getStatus()
+                    != BlockchainTransaction.TransactionStatus.CONFIRMED) {
+
+                savedTransaction.setStatus(
+                        BlockchainTransaction.TransactionStatus.FAILED
+                );
+
+                savedTransaction.setErrorMessage(
+                        exception.getMessage()
+                );
+
+                transactionRepository.save(
+                        savedTransaction
+                );
+            }
+
+            throw exception;
+        }
+    }
+
+
+    // =========================================================
+    // READ DIGITAL ASSET
+    // =========================================================
+
+    public List<Type> getAsset(
+            String assetHash)
+            throws Exception {
+
+        validateAssetHash(assetHash);
+
+        Function function = new Function(
+                "getAsset",
+
+                Arrays.asList(
+                        new Bytes32(
+                                Numeric.hexStringToByteArray(
+                                        normalizeHash(assetHash)
+                                )
+                        )
+                ),
+
+                Arrays.asList(
+                        new TypeReference<Bytes32>() {},
+                        new TypeReference<Address>() {},
+                        new TypeReference<Uint256>() {},
+                        new TypeReference<Bool>() {}
+                )
+        );
+
+
+        String encodedFunction =
+                FunctionEncoder.encode(function);
+
+
+        EthCall response = web3j
+                .ethCall(
+                        Transaction.createEthCallTransaction(
+                                null,
+                                blockchainConfig.getContractAddress(),
+                                encodedFunction
+                        ),
+                        DefaultBlockParameterName.LATEST
+                )
+                .send();
+
+
+        if (response.hasError()) {
+
+            throw new RuntimeException(
+                    "Blockchain asset contract call failed: "
+                            + response.getError().getMessage()
+            );
+        }
+
+
+        return FunctionReturnDecoder.decode(
+                response.getValue(),
+                function.getOutputParameters()
+        );
+    }
+
+
+    // =========================================================
+    // ANCHOR DIGITAL ASSET
+    // =========================================================
+
+    public String anchorAsset(
+            String assetHash,
+            String ownerAddress)
+            throws Exception {
+
+        validateAssetHash(assetHash);
+        validateWalletAddress(ownerAddress);
+
+
+        BlockchainTransaction blockchainTransaction =
+                new BlockchainTransaction();
+
+        String operationId =
+                "ASSET_MINT-" + UUID.randomUUID();
+
+        blockchainTransaction.setOperationId(
+                operationId
+        );
+
+        blockchainTransaction.setOperationType(
+                BlockchainTransaction.OperationType.ASSET_MINT
+        );
+
+        blockchainTransaction.setEntityType(
+                "ASSET"
+        );
+
+        blockchainTransaction.setChainId(
+                Long.parseLong(
+                        getNetworkVersion()
+                )
+        );
+
+        blockchainTransaction.setContractAddress(
+                blockchainConfig.getContractAddress()
+        );
+
+        blockchainTransaction.setStatus(
+                BlockchainTransaction.TransactionStatus.PENDING
+        );
+
+
+        BlockchainTransaction savedTransaction =
+                transactionRepository.save(
+                        blockchainTransaction
+                );
+
+
+        try {
+
+            Credentials credentials =
+                    Credentials.create(privateKey);
+
+            String senderAddress =
+                    credentials.getAddress();
+
+
+            savedTransaction.setFromAddress(
+                    senderAddress
+            );
+
+            savedTransaction.setToAddress(
+                    blockchainConfig.getContractAddress()
+            );
+
+            savedTransaction.setStatus(
+                    BlockchainTransaction.TransactionStatus.SUBMITTED
+            );
+
+            savedTransaction.setSubmittedAt(
+                    LocalDateTime.now()
+            );
+
+            transactionRepository.save(
+                    savedTransaction
+            );
+
+
+            Function function = new Function(
+                    "anchorAsset",
+
+                    Arrays.asList(
+
+                            new Bytes32(
+                                    Numeric.hexStringToByteArray(
+                                            normalizeHash(assetHash)
+                                    )
+                            ),
+
+                            new Address(ownerAddress)
+                    ),
+
+                    List.of()
+            );
+
+
+            String encodedFunction =
+                    FunctionEncoder.encode(
+                            function
+                    );
+
+
+            TransactionManager transactionManager =
+                    new RawTransactionManager(
+                            web3j,
+                            credentials
+                    );
+
+
+            EthSendTransaction transaction =
+                    transactionManager.sendTransaction(
+                            GAS_PRICE,
+                            GAS_LIMIT,
+                            blockchainConfig.getContractAddress(),
+                            encodedFunction,
+                            BigInteger.ZERO
+                    );
+
+
+            if (transaction.hasError()) {
+
+                savedTransaction.setStatus(
+                        BlockchainTransaction.TransactionStatus.FAILED
+                );
+
+                savedTransaction.setErrorMessage(
+                        transaction.getError().getMessage()
+                );
+
+                transactionRepository.save(
+                        savedTransaction
+                );
+
+                throw new RuntimeException(
+                        "Blockchain asset transaction failed: "
+                                + transaction.getError().getMessage()
+                );
+            }
+
+
+            String transactionHash =
+                    transaction.getTransactionHash();
+
+
+            savedTransaction.setTransactionHash(
+                    transactionHash
+            );
+
+            transactionRepository.save(
+                    savedTransaction
+            );
+
+
+            TransactionReceipt receipt =
+                    waitForReceipt(transactionHash);
+
+
+            if (!receipt.isStatusOK()) {
+
+                savedTransaction.setStatus(
+                        BlockchainTransaction.TransactionStatus.FAILED
+                );
+
+                savedTransaction.setErrorMessage(
+                        "Blockchain asset transaction reverted"
+                );
+
+                transactionRepository.save(
+                        savedTransaction
+                );
+
+                throw new RuntimeException(
+                        "Blockchain asset transaction reverted: "
+                                + transactionHash
+                );
+            }
+
+
+            savedTransaction.setStatus(
+                    BlockchainTransaction.TransactionStatus.CONFIRMED
+            );
+
+            savedTransaction.setBlockNumber(
+                    receipt.getBlockNumber().longValue()
+            );
+
+            savedTransaction.setGasUsed(
+                    receipt.getGasUsed().longValue()
+            );
+
+            savedTransaction.setConfirmedAt(
+                    LocalDateTime.now()
+            );
+
+            transactionRepository.save(
+                    savedTransaction
+            );
+
+
+            return transactionHash;
+
+        } catch (Exception exception) {
 
             if (savedTransaction.getStatus()
                     != BlockchainTransaction.TransactionStatus.CONFIRMED) {
@@ -752,6 +962,479 @@ public class BlockchainService {
 
             throw exception;
         }
+    }
+
+
+    // =========================================================
+    // SET DIGITAL ASSET STATUS
+    // =========================================================
+
+    public String setAssetStatus(
+            String assetHash,
+            boolean active)
+            throws Exception {
+
+        validateAssetHash(assetHash);
+
+
+        BlockchainTransaction blockchainTransaction =
+                new BlockchainTransaction();
+
+        String operationId =
+                "ASSET_REVOKE-" + UUID.randomUUID();
+
+        blockchainTransaction.setOperationId(
+                operationId
+        );
+
+        blockchainTransaction.setOperationType(
+                BlockchainTransaction.OperationType.ASSET_REVOKE
+        );
+
+        blockchainTransaction.setEntityType(
+                "ASSET"
+        );
+
+        blockchainTransaction.setChainId(
+                Long.parseLong(
+                        getNetworkVersion()
+                )
+        );
+
+        blockchainTransaction.setContractAddress(
+                blockchainConfig.getContractAddress()
+        );
+
+        blockchainTransaction.setStatus(
+                BlockchainTransaction.TransactionStatus.PENDING
+        );
+
+
+        BlockchainTransaction savedTransaction =
+                transactionRepository.save(
+                        blockchainTransaction
+                );
+
+
+        try {
+
+            Credentials credentials =
+                    Credentials.create(privateKey);
+
+            String senderAddress =
+                    credentials.getAddress();
+
+
+            savedTransaction.setFromAddress(
+                    senderAddress
+            );
+
+            savedTransaction.setToAddress(
+                    blockchainConfig.getContractAddress()
+            );
+
+            savedTransaction.setStatus(
+                    BlockchainTransaction.TransactionStatus.SUBMITTED
+            );
+
+            savedTransaction.setSubmittedAt(
+                    LocalDateTime.now()
+            );
+
+            transactionRepository.save(
+                    savedTransaction
+            );
+
+
+            Function function = new Function(
+                    "setAssetStatus",
+
+                    Arrays.asList(
+
+                            new Bytes32(
+                                    Numeric.hexStringToByteArray(
+                                            normalizeHash(assetHash)
+                                    )
+                            ),
+
+                            new Bool(active)
+                    ),
+
+                    List.of()
+            );
+
+
+            String encodedFunction =
+                    FunctionEncoder.encode(
+                            function
+                    );
+
+
+            TransactionManager transactionManager =
+                    new RawTransactionManager(
+                            web3j,
+                            credentials
+                    );
+
+
+            EthSendTransaction transaction =
+                    transactionManager.sendTransaction(
+                            GAS_PRICE,
+                            GAS_LIMIT,
+                            blockchainConfig.getContractAddress(),
+                            encodedFunction,
+                            BigInteger.ZERO
+                    );
+
+
+            if (transaction.hasError()) {
+
+                savedTransaction.setStatus(
+                        BlockchainTransaction.TransactionStatus.FAILED
+                );
+
+                savedTransaction.setErrorMessage(
+                        transaction.getError().getMessage()
+                );
+
+                transactionRepository.save(
+                        savedTransaction
+                );
+
+                throw new RuntimeException(
+                        "Blockchain asset status transaction failed: "
+                                + transaction.getError().getMessage()
+                );
+            }
+
+
+            String transactionHash =
+                    transaction.getTransactionHash();
+
+
+            savedTransaction.setTransactionHash(
+                    transactionHash
+            );
+
+            transactionRepository.save(
+                    savedTransaction
+            );
+
+
+            TransactionReceipt receipt =
+                    waitForReceipt(transactionHash);
+
+
+            if (!receipt.isStatusOK()) {
+
+                savedTransaction.setStatus(
+                        BlockchainTransaction.TransactionStatus.FAILED
+                );
+
+                savedTransaction.setErrorMessage(
+                        "Blockchain asset status transaction reverted"
+                );
+
+                transactionRepository.save(
+                        savedTransaction
+                );
+
+                throw new RuntimeException(
+                        "Blockchain asset status transaction reverted: "
+                                + transactionHash
+                );
+            }
+
+
+            savedTransaction.setStatus(
+                    BlockchainTransaction.TransactionStatus.CONFIRMED
+            );
+
+            savedTransaction.setBlockNumber(
+                    receipt.getBlockNumber().longValue()
+            );
+
+            savedTransaction.setGasUsed(
+                    receipt.getGasUsed().longValue()
+            );
+
+            savedTransaction.setConfirmedAt(
+                    LocalDateTime.now()
+            );
+
+            transactionRepository.save(
+                    savedTransaction
+            );
+
+
+            return transactionHash;
+
+        } catch (Exception exception) {
+
+            if (savedTransaction.getStatus()
+                    != BlockchainTransaction.TransactionStatus.CONFIRMED) {
+
+                savedTransaction.setStatus(
+                        BlockchainTransaction.TransactionStatus.FAILED
+                );
+
+                savedTransaction.setErrorMessage(
+                        exception.getMessage()
+                );
+
+                transactionRepository.save(
+                        savedTransaction
+                );
+            }
+
+            throw exception;
+        }
+    }
+
+
+    // =========================================================
+    // UPDATE DIGITAL ASSET OWNER
+    // =========================================================
+
+    public String updateAssetOwner(
+            String assetHash,
+            String newOwnerAddress)
+            throws Exception {
+
+        validateAssetHash(assetHash);
+        validateWalletAddress(newOwnerAddress);
+
+
+        BlockchainTransaction blockchainTransaction =
+                new BlockchainTransaction();
+
+        String operationId =
+                "ASSET_TRANSFER-" + UUID.randomUUID();
+
+        blockchainTransaction.setOperationId(
+                operationId
+        );
+
+        blockchainTransaction.setOperationType(
+                BlockchainTransaction.OperationType.ASSET_TRANSFER
+        );
+
+        blockchainTransaction.setEntityType(
+                "ASSET"
+        );
+
+        blockchainTransaction.setChainId(
+                Long.parseLong(
+                        getNetworkVersion()
+                )
+        );
+
+        blockchainTransaction.setContractAddress(
+                blockchainConfig.getContractAddress()
+        );
+
+        blockchainTransaction.setStatus(
+                BlockchainTransaction.TransactionStatus.PENDING
+        );
+
+
+        BlockchainTransaction savedTransaction =
+                transactionRepository.save(
+                        blockchainTransaction
+                );
+
+
+        try {
+
+            Credentials credentials =
+                    Credentials.create(privateKey);
+
+            String senderAddress =
+                    credentials.getAddress();
+
+
+            savedTransaction.setFromAddress(
+                    senderAddress
+            );
+
+            savedTransaction.setToAddress(
+                    blockchainConfig.getContractAddress()
+            );
+
+            savedTransaction.setStatus(
+                    BlockchainTransaction.TransactionStatus.SUBMITTED
+            );
+
+            savedTransaction.setSubmittedAt(
+                    LocalDateTime.now()
+            );
+
+            transactionRepository.save(
+                    savedTransaction
+            );
+
+
+            Function function = new Function(
+                    "updateAssetOwner",
+
+                    Arrays.asList(
+
+                            new Bytes32(
+                                    Numeric.hexStringToByteArray(
+                                            normalizeHash(assetHash)
+                                    )
+                            ),
+
+                            new Address(newOwnerAddress)
+                    ),
+
+                    List.of()
+            );
+
+
+            String encodedFunction =
+                    FunctionEncoder.encode(
+                            function
+                    );
+
+
+            TransactionManager transactionManager =
+                    new RawTransactionManager(
+                            web3j,
+                            credentials
+                    );
+
+
+            EthSendTransaction transaction =
+                    transactionManager.sendTransaction(
+                            GAS_PRICE,
+                            GAS_LIMIT,
+                            blockchainConfig.getContractAddress(),
+                            encodedFunction,
+                            BigInteger.ZERO
+                    );
+
+
+            if (transaction.hasError()) {
+
+                savedTransaction.setStatus(
+                        BlockchainTransaction.TransactionStatus.FAILED
+                );
+
+                savedTransaction.setErrorMessage(
+                        transaction.getError().getMessage()
+                );
+
+                transactionRepository.save(
+                        savedTransaction
+                );
+
+                throw new RuntimeException(
+                        "Blockchain asset owner transaction failed: "
+                                + transaction.getError().getMessage()
+                );
+            }
+
+
+            String transactionHash =
+                    transaction.getTransactionHash();
+
+
+            savedTransaction.setTransactionHash(
+                    transactionHash
+            );
+
+            transactionRepository.save(
+                    savedTransaction
+            );
+
+
+            TransactionReceipt receipt =
+                    waitForReceipt(transactionHash);
+
+
+            if (!receipt.isStatusOK()) {
+
+                savedTransaction.setStatus(
+                        BlockchainTransaction.TransactionStatus.FAILED
+                );
+
+                savedTransaction.setErrorMessage(
+                        "Blockchain asset owner transaction reverted"
+                );
+
+                transactionRepository.save(
+                        savedTransaction
+                );
+
+                throw new RuntimeException(
+                        "Blockchain asset owner transaction reverted: "
+                                + transactionHash
+                );
+            }
+
+
+            savedTransaction.setStatus(
+                    BlockchainTransaction.TransactionStatus.CONFIRMED
+            );
+
+            savedTransaction.setBlockNumber(
+                    receipt.getBlockNumber().longValue()
+            );
+
+            savedTransaction.setGasUsed(
+                    receipt.getGasUsed().longValue()
+            );
+
+            savedTransaction.setConfirmedAt(
+                    LocalDateTime.now()
+            );
+
+            transactionRepository.save(
+                    savedTransaction
+            );
+
+
+            return transactionHash;
+
+        } catch (Exception exception) {
+
+            if (savedTransaction.getStatus()
+                    != BlockchainTransaction.TransactionStatus.CONFIRMED) {
+
+                savedTransaction.setStatus(
+                        BlockchainTransaction.TransactionStatus.FAILED
+                );
+
+                savedTransaction.setErrorMessage(
+                        exception.getMessage()
+                );
+
+                transactionRepository.save(
+                        savedTransaction
+                );
+            }
+
+            throw exception;
+        }
+    }
+
+
+    // =========================================================
+    // NORMALIZE HASH
+    // =========================================================
+
+    private String normalizeHash(
+            String hash) {
+
+        if (hash == null) {
+            return null;
+        }
+
+        return hash.startsWith("0x") ||
+                hash.startsWith("0X")
+                ? hash.substring(2)
+                : hash;
     }
 
 
@@ -786,6 +1469,24 @@ public class BlockchainService {
 
             throw new IllegalArgumentException(
                     "Credential hash must be a valid bytes32 hex value"
+            );
+        }
+    }
+
+
+    // =========================================================
+    // VALIDATE ASSET HASH
+    // =========================================================
+
+    private void validateAssetHash(
+            String assetHash) {
+
+        if (assetHash == null ||
+                !assetHash.matches(
+                        "^(0x)?[0-9a-fA-F]{64}$")) {
+
+            throw new IllegalArgumentException(
+                    "Asset hash must be a valid SHA-256 bytes32 hex value"
             );
         }
     }

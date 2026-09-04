@@ -1,14 +1,22 @@
-import { defineConfig } from "hardhat/config";
-import hardhatIgnition from "@nomicfoundation/hardhat-ignition";
-import hardhatEthers from "@nomicfoundation/hardhat-ethers";
+import { network } from "hardhat";
 
-export default defineConfig({
-  plugins: [
-    hardhatIgnition,
-    hardhatEthers,
-  ],
+async function main() {
+    const { ethers } = await network.connect();
 
-  solidity: {
-    version: "0.8.34",
-  },
+    const registry = await ethers.getContractAt(
+        "AegisIDRegistry",
+        "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+    );
+
+    const result = await registry.getAsset(
+        "0xbe6527448348a118a697e423c0e657f726645d8ba36febb2172ee8088cb0571d"
+    );
+
+    console.log("Asset result:");
+    console.log(result);
+}
+
+main().catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
 });
