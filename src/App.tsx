@@ -16,6 +16,7 @@ import { BlockchainPage } from "./pages/BlockchainPage";
 import { AuditLogsPage } from "./pages/AuditLogsPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import { NotificationsPage } from "./pages/NotificationsPage";
+import { VerifyAssetPage } from "./pages/VerifyAssetPage";
 
 function MainContent() {
   const { user, loading } = useAuth();
@@ -48,6 +49,7 @@ function MainContent() {
             {activeTab === "identity" && <IdentityPage />}
             {activeTab === "credentials" && <CredentialsPage />}
             {activeTab === "assets" && <AssetsPage />}
+            {activeTab === "verify-asset" && <VerifyAssetPage />}
             {activeTab === "verification" && <VerificationPage />}
             {activeTab === "organizations" && <OrganizationsPage />}
             {activeTab === "admin" && <AdminUsersPage />}
