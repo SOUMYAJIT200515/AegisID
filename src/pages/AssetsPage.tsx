@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { api } from "../api/client";
+import { digitalAssetApi } from "../services/digitalAssetApi";
 import { useAuth } from "../context/AuthContext";
 import { useNotification } from "../context/NotificationContext";
-import { Box, Plus, ShieldCheck, Trash2, PauseCircle, PlayCircle, Send, Copy, Check, Info, CheckCircle2, Filter, Calendar } from "lucide-react";
+import { Box, Plus, ShieldCheck, Trash2, PauseCircle, PlayCircle, Send, Copy, Check, Info, CheckCircle2, Filter, Calendar, Eye, FileBadge } from "lucide-react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
 import { format, subDays, isAfter, startOfDay } from "date-fns";
 import { BlockchainProofModal } from "../components/BlockchainProofModal";
@@ -37,7 +38,7 @@ export function AssetsPage() {
 
   async function loadAssets() {
     try {
-      const data = await api.get("/assets");
+      const data = await digitalAssetApi.getDigitalAssets();
       setAssets(data);
     } catch (err: any) {
       showNotification("error", "Failed to Load", err.message || "Could not load assets");
@@ -89,22 +90,24 @@ export function AssetsPage() {
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!selectedFile) {
+      showNotification("error", "File Required", "Please select a file to upload.");
+      return;
+    }
+
     setIsSubmitting(true);
     showNotification("info", "Uploading Asset...", "Preparing digital asset for registry.");
     
     try {
-      let data: any;
-      // Note: We use JSON here because the current mock Express server doesn't parse multipart/form-data.
-      // For the real Spring Boot backend, switch back to using api.postFormData with the FormData object.
-      const payload = {
-        ...form,
-        fileName: selectedFile?.name,
-        customMetadata: metadata.length > 0 ? metadata : undefined
-      };
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+      formData.append("assetName", form.assetName);
+      formData.append("description", form.assetDescription);
+      formData.append("ownerId", String(form.userId));
       
-      data = await api.post("/assets", payload);
+      const data = await digitalAssetApi.uploadDigitalAsset(formData);
       
-      // Assume the backend returns the created asset with an assetId or id
       setCreatedAssetId(data.assetId || data.id || "AST-UNKNOWN");
       setForm({ userId: "", assetName: "", assetDescription: "", assetType: "IntellectualProperty" });
       setSelectedFile(null);
@@ -312,36 +315,35 @@ export function AssetsPage() {
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="border-b border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-white/[0.02] text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                  <th className="p-4">Asset</th>
-                  <th className="p-4">Type</th>
-                  <th className="p-4">Owner</th>
-                  <th className="p-4">Cryptographic Hash</th>
+                  <th className="p-4">Asset ID</th>
+                  <th className="p-4">Asset Name</th>
+                  <th className="p-4">File / Format</th>
                   <th className="p-4">Status</th>
-                  {canManageAssets && <th className="p-4 text-right">Actions</th>}
+                  <th className="p-4">Created Date</th>
+                  <th className="p-4 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200 dark:divide-white/5 text-sm text-slate-700 dark:text-slate-300">
                 {loading ? (
-                  <tr><td colSpan={canManageAssets ? 6 : 5} className="p-8 text-center text-slate-500 flex items-center justify-center space-x-2">Loading assets...</td></tr>
+                  <tr><td colSpan={6} className="p-8 text-center text-slate-500 flex items-center justify-center space-x-2">Loading assets...</td></tr>
                 ) : filteredAssets.length === 0 ? (
-                  <tr><td colSpan={canManageAssets ? 6 : 5} className="p-8 text-center text-slate-500">No digital assets match your criteria.</td></tr>
+                  <tr><td colSpan={6} className="p-8 text-center text-slate-500">No digital assets match your criteria.</td></tr>
                 ) : (
                   filteredAssets.map((a) => (
-                    <tr key={a.id} onClick={() => setSelectedAssetDetails(a)} className="hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-colors cursor-pointer">
+                    <tr key={a.id} className="hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-colors">
+                    <td className="p-4">
+                      <span className="font-mono text-xs text-blue-600 dark:text-blue-400 font-semibold">{a.assetId || `AST-${a.id}`}</span>
+                    </td>
                     <td className="p-4">
                       <div className="font-semibold text-slate-900 dark:text-white">{a.assetName}</div>
-                      <div className="flex items-center space-x-2 mt-0.5">
-                        <span className="font-mono text-xs text-blue-600 dark:text-blue-400 font-semibold">{a.assetId || `AST-${a.id}`}</span>
+                    </td>
+                    <td className="p-4">
+                      <div className="flex flex-col">
+                        <span className="text-slate-700 dark:text-slate-300">{a.fileName || "-"}</span>
                         {a.fileFormat && (
-                          <span className="text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 px-1.5 py-0.5 rounded font-semibold uppercase tracking-wider">{a.fileFormat}</span>
+                          <span className="text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 px-1.5 py-0.5 rounded font-semibold uppercase tracking-wider w-fit mt-1">{a.fileFormat}</span>
                         )}
                       </div>
-                    </td>
-                    <td className="p-4 font-medium">{a.assetType}</td>
-                    <td className="p-4 font-semibold text-slate-900 dark:text-white">User #{a.userId}</td>
-                    <td className="p-4">
-                      <div className="font-mono text-xs text-slate-500 mb-1">{formatHash(a.assetHash)}</div>
-                      <div className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Tx: {formatHash(a.blockchainTxHash)}</div>
                     </td>
                     <td className="p-4">
                       <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${
@@ -352,44 +354,43 @@ export function AssetsPage() {
                         {a.status || "REGISTERED"}
                       </span>
                     </td>
-                    {canManageAssets && (
-                      <td className="p-4 text-right space-x-2">
-                        {a.status === "ACTIVE" ? (
-                          <button
-                            onClick={(e) => { e.stopPropagation(); handleAction(a.id, "suspend"); }}
-                            disabled={actionLoading === a.id}
-                            title="Suspend Asset"
-                            className="p-1.5 hover:bg-amber-50 dark:hover:bg-amber-500/10 text-amber-500 dark:text-amber-400 rounded-lg transition-colors inline-flex border border-transparent hover:border-amber-200 dark:hover:border-amber-500/20 disabled:opacity-50"
-                          >
-                            <PauseCircle className="w-4 h-4" />
-                          </button>
-                        ) : (
-                          <button
-                            onClick={(e) => { e.stopPropagation(); handleAction(a.id, "activate"); }}
-                            disabled={actionLoading === a.id}
-                            title="Activate Asset"
-                            className="p-1.5 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-lg transition-colors inline-flex border border-transparent hover:border-emerald-200 dark:hover:border-emerald-500/20 disabled:opacity-50"
-                          >
-                            <PlayCircle className="w-4 h-4" />
-                          </button>
-                        )}
-                        <button
-                          onClick={(e) => { e.stopPropagation(); setSelectedAssetId(a.id); setShowTransferModal(true); }}
-                          title="Transfer Asset"
-                          className="p-1.5 hover:bg-blue-50 dark:hover:bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-lg transition-colors inline-flex border border-transparent hover:border-blue-200 dark:hover:border-blue-500/20"
-                        >
-                          <Send className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={(e) => { e.stopPropagation(); if(window.confirm('Are you sure you want to delete this asset?')) handleAction(a.id, "delete") }}
-                          disabled={actionLoading === a.id}
-                          title="Delete Asset"
-                          className="p-1.5 hover:bg-red-50 dark:hover:bg-red-500/10 text-red-600 dark:text-red-400 rounded-lg transition-colors inline-flex border border-transparent hover:border-red-200 dark:hover:border-red-500/20 disabled:opacity-50"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </td>
-                    )}
+                    <td className="p-4 font-medium">
+                      {a.createdAt ? new Date(a.createdAt).toLocaleDateString() : "-"}
+                    </td>
+                    <td className="p-4 text-right space-x-2">
+                      <button
+                        onClick={(e) => { e.stopPropagation(); handleCopy(a.assetId || `AST-${a.id}`, `table-${a.id}`) }}
+                        title="Copy ID"
+                        className="p-1.5 hover:bg-slate-100 dark:hover:bg-white/5 text-slate-500 dark:text-slate-400 rounded-lg transition-colors inline-flex border border-transparent"
+                      >
+                        {copiedHash === `table-${a.id}` ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
+                      </button>
+                      <button
+                        onClick={async (e) => { 
+                          e.stopPropagation(); 
+                          try {
+                            const details = await digitalAssetApi.getDigitalAsset(a.assetId || a.id);
+                            setSelectedAssetDetails(details);
+                          } catch(err) {
+                            showNotification("error", "Error", "Could not fetch asset details");
+                          }
+                        }}
+                        title="View Asset"
+                        className="p-1.5 hover:bg-slate-100 dark:hover:bg-white/5 text-slate-500 dark:text-slate-400 rounded-lg transition-colors inline-flex border border-transparent"
+                      >
+                        <Eye className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={(e) => { 
+                          e.stopPropagation(); 
+                          window.location.href = `/verify-asset?assetId=${a.assetId || `AST-${a.id}`}`;
+                        }}
+                        title="Verify Asset"
+                        className="p-1.5 hover:bg-blue-50 dark:hover:bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-lg transition-colors inline-flex border border-transparent"
+                      >
+                        <ShieldCheck className="w-4 h-4" />
+                      </button>
+                    </td>
                   </tr>
                 ))
               )}
@@ -675,23 +676,6 @@ export function AssetsPage() {
                     <p className="text-sm font-medium text-slate-900 dark:text-white">{selectedAssetDetails.fileFormat || "-"}</p>
                   </div>
                 </div>
-
-                <div>
-                  <h5 className="text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-semibold mb-1">Storage Folder</h5>
-                  <p className="text-sm font-mono text-slate-900 dark:text-white break-all">{selectedAssetDetails.storageFolder || "-"}</p>
-                </div>
-                
-                {selectedAssetDetails.storageAddress && (
-                  <div>
-                    <h5 className="text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-semibold mb-1">Storage Address</h5>
-                    <div className="bg-slate-50 dark:bg-[#1a1a1f] p-3.5 rounded-xl border border-slate-200 dark:border-white/10 flex items-center justify-between group">
-                      <p className="font-mono text-xs text-slate-700 dark:text-slate-300 break-all mr-3">{selectedAssetDetails.storageAddress}</p>
-                      <button onClick={() => handleCopy(selectedAssetDetails.storageAddress, 'address')} className="text-slate-400 hover:text-slate-600 dark:hover:text-white shrink-0">
-                        {copiedHash === 'address' ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
-                      </button>
-                    </div>
-                  </div>
-                )}
               </div>
 
               {selectedAssetDetails.customMetadata && selectedAssetDetails.customMetadata.length > 0 && (

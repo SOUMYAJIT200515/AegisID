@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { digitalAssetApi } from "../services/digitalAssetApi";
 import { api } from "../api/client";
-import { Search, CheckCircle2, XCircle, FileText, Folder, Check, Copy } from "lucide-react";
+import { Search, CheckCircle2, XCircle, FileText, Folder, Check, Copy, ExternalLink, ShieldCheck, AlertTriangle } from "lucide-react";
 
 export function VerifyAssetPage() {
   const [assetId, setAssetId] = useState("");
@@ -8,18 +9,26 @@ export function VerifyAssetPage() {
   const [result, setResult] = useState<any | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState<string | null>(null);
+  const [verificationResult, setVerificationResult] = useState<boolean | null>(null);
 
-  const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!assetId.trim()) return;
+  // Initialize from URL params
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const idParam = params.get("assetId");
+    if (idParam) {
+      setAssetId(idParam);
+      handleSearchById(idParam);
+    }
+  }, []);
 
+  const handleSearchById = async (id: string) => {
+    if (!id.trim()) return;
     setLoading(true);
     setError(null);
     setResult(null);
-
+    setVerificationResult(null);
     try {
-      // Future API call
-      const data = await api.get(`/assets/${assetId}`);
+      const data = await digitalAssetApi.getDigitalAsset(id);
       setResult(data);
     } catch (err: any) {
       if (err.message.includes("404") || err.message.toLowerCase().includes("not found")) {
@@ -30,6 +39,27 @@ export function VerifyAssetPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    handleSearchById(assetId);
+  };
+
+  const handleVerifyIntegrity = async () => {
+    if (!result) return;
+    try {
+      const vResult = await digitalAssetApi.verifyDigitalAsset(result.assetId || result.id);
+      setVerificationResult(true);
+    } catch (err: any) {
+      setVerificationResult(false);
+    }
+  };
+
+  const handlePreview = () => {
+    if (!result) return;
+    const fileUrl = digitalAssetApi.getDigitalAssetFileUrl(result.assetId || result.id);
+    window.open(fileUrl, '_blank');
   };
 
   const handleCopy = (text: string, type: string) => {
@@ -178,32 +208,43 @@ export function VerifyAssetPage() {
                   <h5 className="text-[10px] uppercase tracking-wider text-slate-500 font-semibold mb-1">Format</h5>
                   <p className="text-sm font-medium text-slate-900 dark:text-white">{result.fileFormat || "-"}</p>
                 </div>
-              </div>
 
-              <div className="bg-slate-50 dark:bg-[#1a1a1f] rounded-2xl p-5 border border-slate-200 dark:border-white/5 space-y-4">
-                <div className="flex items-center space-x-2 text-slate-700 dark:text-slate-300 mb-2">
-                  <Folder className="w-4 h-4" />
-                  <h4 className="text-sm font-bold">Storage Information</h4>
+                <div className="pt-4 flex flex-col sm:flex-row gap-3 border-t border-slate-200 dark:border-white/5">
+                  <button
+                    onClick={handlePreview}
+                    className="flex-1 py-2.5 px-4 bg-white dark:bg-[#0d0d0f] border border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center justify-center space-x-2 transition-all shadow-sm"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                    <span>Preview File</span>
+                  </button>
+                  <button
+                    onClick={handleVerifyIntegrity}
+                    className="flex-1 py-2.5 px-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100 rounded-xl text-sm font-medium flex items-center justify-center space-x-2 transition-all shadow-sm"
+                  >
+                    <ShieldCheck className="w-4 h-4" />
+                    <span>Verify Integrity</span>
+                  </button>
                 </div>
                 
-                <div>
-                  <h5 className="text-[10px] uppercase tracking-wider text-slate-500 font-semibold mb-1">Storage Folder</h5>
-                  <p className="text-sm font-medium text-slate-900 dark:text-white font-mono break-all">{result.storageFolder || "-"}</p>
-                </div>
-                <div>
-                  <h5 className="text-[10px] uppercase tracking-wider text-slate-500 font-semibold mb-1">Storage Address</h5>
-                  <div className="flex items-start justify-between group">
-                    <p className="text-sm font-medium text-slate-900 dark:text-white font-mono break-all mr-2">{result.storageAddress || "-"}</p>
-                    {result.storageAddress && (
-                      <button 
-                        onClick={() => handleCopy(result.storageAddress, 'address')}
-                        className="text-slate-400 hover:text-slate-900 dark:hover:text-white shrink-0 mt-0.5"
-                      >
-                        {copied === 'address' ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
-                      </button>
-                    )}
+                {verificationResult === true && (
+                  <div className="mt-4 p-3 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 rounded-xl flex items-start space-x-2 animate-in fade-in slide-in-from-top-2">
+                    <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-sm font-bold text-emerald-900 dark:text-emerald-300">Integrity Verified</p>
+                      <p className="text-xs text-emerald-700 dark:text-emerald-400/80">The digital asset matches the original cryptographic hash on record.</p>
+                    </div>
                   </div>
-                </div>
+                )}
+                
+                {verificationResult === false && (
+                  <div className="mt-4 p-3 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 rounded-xl flex items-start space-x-2 animate-in fade-in slide-in-from-top-2">
+                    <AlertTriangle className="w-5 h-5 text-red-600 dark:text-red-400 shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-sm font-bold text-red-900 dark:text-red-300">Integrity Check Failed</p>
+                      <p className="text-xs text-red-700 dark:text-red-400/80">The file has been modified or is missing. The current hash does not match the original record.</p>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

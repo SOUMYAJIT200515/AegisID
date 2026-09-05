@@ -20,9 +20,23 @@ import { VerifyAssetPage } from "./pages/VerifyAssetPage";
 
 function MainContent() {
   const { user, loading } = useAuth();
-  const [activeTab, setActiveTab] = useState("dashboard");
+  
+  // Initialize tab from pathname (e.g. "/verify-asset" -> "verify-asset")
+  const initialTab = window.location.pathname.replace('/', '') || "dashboard";
+  const [activeTab, setActiveTab] = useState(initialTab);
+  
   const [isAiModalOpen, setIsAiModalOpen] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
+
+  // Sync pathname when activeTab changes
+  React.useEffect(() => {
+    if (activeTab === "dashboard" && window.location.pathname !== "/") {
+      window.history.pushState({}, '', '/');
+    } else if (activeTab !== "dashboard" && window.location.pathname !== `/${activeTab}`) {
+      // Keep query string if it exists
+      window.history.pushState({}, '', `/${activeTab}${window.location.search}`);
+    }
+  }, [activeTab]);
 
   if (loading) {
     return (

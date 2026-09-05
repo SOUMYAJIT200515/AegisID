@@ -365,9 +365,37 @@
       "storageAddress": "ipfs://Qmcb4b11542e9ce56a22aedc1e39274bbc8cc6b54c55da",
       "customMetadata": [],
       "createdAt": "2026-09-05T17:27:43.867Z"
+    },
+    {
+      "id": 2,
+      "assetId": "AST-2026-DD8BB902",
+      "userId": 6,
+      "assetName": "Deed#7",
+      "assetType": "DigitalIP",
+      "assetHash": "0xc8c9cfb21a029676dbb6687626326e2596ccc92b28429a6a8871eaa865ee3fc7",
+      "ownerAddress": "0x71C359918E7E91c667104b90C5b0C627c54143a5",
+      "status": "ACTIVE",
+      "blockchainTxHash": "0x94072d24cfc01a158289fb066b3a8c33a5ca9ce1bd0d2c13a36c50c27a99dbbb",
+      "fileName": "Sequence (1).png",
+      "fileFormat": "PNG",
+      "storageFolder": "/storage/assets/user-6/",
+      "storageAddress": "ipfs://Qmbcbfc184e50a98622f3571eb3c1620bd6bd34c9fce47",
+      "customMetadata": [],
+      "createdAt": "2026-09-05T18:50:41.966Z"
     }
   ],
   "blockchainTransactions": [
+    {
+      "id": 10,
+      "transactionHash": "0x94072d24cfc01a158289fb066b3a8c33a5ca9ce1bd0d2c13a36c50c27a99dbbb",
+      "entityType": "ASSET",
+      "entityId": "2",
+      "blockchainOperation": "ANCHOR_ASSET",
+      "status": "SUCCESS",
+      "blockNumber": 142872,
+      "timestamp": "2026-09-05T18:50:41.966Z",
+      "errorMessage": null
+    },
     {
       "id": 9,
       "transactionHash": "0xb0524add82e4ee9c4eb3c8a7efbd887c052451c96685ab6713f88a38e6b6ec0e",
@@ -469,6 +497,16 @@
     }
   ],
   "auditLogs": [
+    {
+      "id": 39,
+      "username": "user",
+      "action": "ASSET_CREATED",
+      "entityType": "ASSET",
+      "entityId": "2",
+      "timestamp": "2026-09-05T18:50:41.972Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
     {
       "id": 38,
       "username": "user",

@@ -3,10 +3,7 @@ import { api } from "../api/client";
 import { ShieldCheck, Activity, Cpu, Server, Link, Database, Terminal, CheckCircle2, RefreshCw, Copy, Check, ShieldAlert, Filter } from "lucide-react";
 import { TamperSimulationModal } from "../components/TamperSimulationModal";
 import { NetworkVisualizer } from "../components/NetworkVisualizer";
-<<<<<<< HEAD
-=======
 import { NetworkNodeGraph } from "../components/NetworkNodeGraph";
->>>>>>> 25ab1e5 (Update AegisID frontend and backend integration)
 
 export function BlockchainPage() {
   const [status, setStatus] = useState<any>(null);
@@ -82,6 +79,10 @@ export function BlockchainPage() {
         </div>
       </div>
 
+      <div className="flex flex-col gap-6">
+        <NetworkVisualizer txs={txs} />
+        <NetworkNodeGraph txs={txs} />
+      </div>
 
       {status && (
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">

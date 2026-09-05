@@ -143,7 +143,7 @@ export function NetworkVisualizer({ txs }: NetworkVisualizerProps) {
       </div>
 
       {/* Right: Live Terminal */}
-      <div className="flex-1 p-6 lg:p-8 relative">
+      <div className="flex-1 bg-black p-6 font-mono text-[11px] leading-relaxed flex flex-col relative">
         <div className="flex items-center justify-between mb-4 pb-4 border-b border-slate-800">
           <div className="flex items-center space-x-2 text-slate-500">
             <Terminal className="w-4 h-4" />

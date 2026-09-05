@@ -6,16 +6,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface DigitalAssetRepository
-        extends JpaRepository<DigitalAsset, Long> {
+public interface DigitalAssetRepository extends JpaRepository<DigitalAsset, Long> {
 
-    Optional<DigitalAsset> findByAssetHash(String assetHash);
+    Optional<DigitalAsset> findByAssetId(String assetId);
+
+    boolean existsByAssetId(String assetId);
+
+    boolean existsByFileHash(String fileHash);
 
     List<DigitalAsset> findByOwnerId(Long ownerId);
-
-    List<DigitalAsset> findByStatus(
-            DigitalAsset.AssetStatus status
-    );
-
-    boolean existsByAssetHash(String assetHash);
 }
