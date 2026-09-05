@@ -78,6 +78,20 @@
       "role": "USER",
       "createdAt": "2026-09-04T17:29:53.090Z",
       "updatedAt": "2026-09-04T17:29:53.090Z"
+    },
+    {
+      "id": 7,
+      "organizationId": 1,
+      "departmentId": 1,
+      "employeeCode": "EMP-16",
+      "username": "so",
+      "email": "soumyajitsaha.miit@gmail.com",
+      "fullName": "Soumyajit",
+      "password": "soumya1",
+      "status": "ACTIVE",
+      "role": "USER",
+      "createdAt": "2026-09-05T19:26:26.486Z",
+      "updatedAt": "2026-09-05T19:26:26.486Z"
     }
   ],
   "organizations": [
@@ -382,9 +396,37 @@
       "storageAddress": "ipfs://Qmbcbfc184e50a98622f3571eb3c1620bd6bd34c9fce47",
       "customMetadata": [],
       "createdAt": "2026-09-05T18:50:41.966Z"
+    },
+    {
+      "id": 3,
+      "assetId": "AST-2026-08A1046E",
+      "userId": 6,
+      "assetName": "Deed#2",
+      "assetType": "DigitalIP",
+      "assetHash": "0x2e7d529634aad283d6d0fc08e7c2663da0311db0b47caf74287485e2c89d051f",
+      "ownerAddress": "0x71C359918E7E91c667104b90C5b0C627c54143a5",
+      "status": "ACTIVE",
+      "blockchainTxHash": "0x3fce77c77de2c72c55a23e0eccedbdccd93c09dc50afc70fc3fa3448e1bd6d71",
+      "fileName": "Sequence.png",
+      "fileFormat": "PNG",
+      "storageFolder": "/storage/assets/user-6/",
+      "storageAddress": "ipfs://Qmf65f36bc6f81b19bacacf797a19e1a07a9b54282ef18",
+      "customMetadata": [],
+      "createdAt": "2026-09-05T19:25:18.912Z"
     }
   ],
   "blockchainTransactions": [
+    {
+      "id": 11,
+      "transactionHash": "0x3fce77c77de2c72c55a23e0eccedbdccd93c09dc50afc70fc3fa3448e1bd6d71",
+      "entityType": "ASSET",
+      "entityId": "3",
+      "blockchainOperation": "ANCHOR_ASSET",
+      "status": "SUCCESS",
+      "blockNumber": 142873,
+      "timestamp": "2026-09-05T19:25:18.914Z",
+      "errorMessage": null
+    },
     {
       "id": 10,
       "transactionHash": "0x94072d24cfc01a158289fb066b3a8c33a5ca9ce1bd0d2c13a36c50c27a99dbbb",
@@ -497,6 +539,46 @@
     }
   ],
   "auditLogs": [
+    {
+      "id": 43,
+      "username": "s",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "6",
+      "timestamp": "2026-09-05T19:28:01.420Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 42,
+      "username": "so",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "7",
+      "timestamp": "2026-09-05T19:27:22.619Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 41,
+      "username": "admin",
+      "action": "USER_CREATE",
+      "entityType": "USER",
+      "entityId": "7",
+      "timestamp": "2026-09-05T19:26:26.489Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 40,
+      "username": "user",
+      "action": "ASSET_CREATED",
+      "entityType": "ASSET",
+      "entityId": "3",
+      "timestamp": "2026-09-05T19:25:18.924Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
     {
       "id": 39,
       "username": "user",

@@ -478,15 +478,19 @@ export function AssetsPage() {
                   </div>
                   <div>
                     <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Asset Type</label>
-                    <input
-                      type="text"
+                    <select
                       required
                       disabled={isSubmitting}
                       value={form.assetType}
                       onChange={(e) => setForm({ ...form, assetType: e.target.value })}
                       className="w-full bg-slate-50 dark:bg-[#0d0d0f] border border-slate-200 dark:border-white/10 rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all disabled:opacity-50"
-                      placeholder="IntellectualProperty, Certificate, etc."
-                    />
+                    >
+                      <option value="IntellectualProperty">Intellectual Property</option>
+                      <option value="FinancialInstrument">Financial Instrument</option>
+                      <option value="DigitalIP">Digital IP</option>
+                      <option value="IdentityRecord">Identity Record</option>
+                      <option value="Certificate">Certificate</option>
+                    </select>
                   </div>
                   <div>
                     <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Digital File</label>
