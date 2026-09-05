@@ -1,3 +1,5 @@
+import multer from "multer";
+const upload = multer({ storage: multer.memoryStorage() });
 import express from "express";
 import path from "path";
 import { createServer as createViteServer } from "vite";
@@ -627,12 +629,17 @@ async function startServer() {
     res.json({ success: true, data: asset });
   });
 
-  app.post("/api/assets", (req, res) => {
-    const { userId, assetName, assetType, ownerAddress, fileName, customMetadata } = req.body;
+  app.post("/api/assets/upload", upload.single("file"), (req, res) => {
+    const { userId, assetName, assetType, ownerAddress, customMetadata } = req.body;
     if (!userId || !assetName) {
       return res.status(400).json({ success: false, error: "BAD_REQUEST", message: "userId and assetName are required" });
     }
     
+    let fileName = null;
+    if (req.file) {
+      fileName = req.file.originalname;
+    }
+
     const assetHash = "0x" + Array.from({length: 64}, () => Math.floor(Math.random()*16).toString(16)).join("");
     const txHash = "0x" + Array.from({length: 64}, () => Math.floor(Math.random()*16).toString(16)).join("");
     
@@ -650,7 +657,7 @@ async function startServer() {
       assetId: `AST-${new Date().getFullYear()}-${Array.from({length: 8}, () => Math.floor(Math.random()*16).toString(16).toUpperCase()).join("")}`,
       userId: Number(userId),
       assetName,
-      assetType: assetType || "DigitalIP",
+      assetType: assetType || "IntellectualProperty",
       assetHash,
       ownerAddress: ownerAddress || "0x71C359918E7E91c667104b90C5b0C627c54143a5",
       status: "ACTIVE",

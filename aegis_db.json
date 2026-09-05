@@ -413,9 +413,93 @@
       "storageAddress": "ipfs://Qmf65f36bc6f81b19bacacf797a19e1a07a9b54282ef18",
       "customMetadata": [],
       "createdAt": "2026-09-05T19:25:18.912Z"
+    },
+    {
+      "id": 4,
+      "assetId": "AST-2026-13A9655A",
+      "userId": 6,
+      "assetName": "Deed#9",
+      "assetType": "DigitalIP",
+      "assetHash": "0x05eb059c4acd87b4607b074caaf076788e0552631dd8f9fc37cdcd1a240bf0bb",
+      "ownerAddress": "0x71C359918E7E91c667104b90C5b0C627c54143a5",
+      "status": "ACTIVE",
+      "blockchainTxHash": "0xb22a3a2de55044a5a28ab7e1f775613cda94d36e90df487dc28de383ed4be0e3",
+      "fileName": "Architecture (1).png",
+      "fileFormat": "PNG",
+      "storageFolder": "/storage/assets/user-6/",
+      "storageAddress": "ipfs://Qm6f10475f64a5a10ea56e27ed012eb377e74918a6d03c",
+      "customMetadata": [],
+      "createdAt": "2026-09-05T19:46:11.671Z"
+    },
+    {
+      "id": 5,
+      "assetId": "AST-2026-07F45633",
+      "userId": 6,
+      "assetName": "Deed#10",
+      "assetType": "DigitalIP",
+      "assetHash": "0xa00ea70844294d707020755e48e7267413fad699964c88370b11102b21d45baa",
+      "ownerAddress": "0x71C359918E7E91c667104b90C5b0C627c54143a5",
+      "status": "ACTIVE",
+      "blockchainTxHash": "0x977ab9f63fc554b3dff48b5d712f348deb2d19712eb0104d178d03d97df9efae",
+      "fileName": "Sequence.png",
+      "fileFormat": "PNG",
+      "storageFolder": "/storage/assets/user-6/",
+      "storageAddress": "ipfs://Qm2621e0545d591efc531877e6c7c9ac5e2e28c937ab8c",
+      "customMetadata": [],
+      "createdAt": "2026-09-05T19:53:17.922Z"
+    },
+    {
+      "id": 6,
+      "assetId": "AST-2026-FA2CB455",
+      "userId": 6,
+      "assetName": "Deed#11",
+      "assetType": "DigitalIP",
+      "assetHash": "0x5ac814e918ac493024f834db9b56fd22df1690957b657936aaf62f43dfeba7d3",
+      "ownerAddress": "0x71C359918E7E91c667104b90C5b0C627c54143a5",
+      "status": "ACTIVE",
+      "blockchainTxHash": "0xbf7d5f3286c9ab1db8a8c6cef24565697c0fbe21d879094414434ab5a315b890",
+      "fileName": "Thermodynamics_and_Thermochemistry__Kattar_NEET_2026__Physical.pdf",
+      "fileFormat": "PDF",
+      "storageFolder": "/storage/assets/user-6/",
+      "storageAddress": "ipfs://Qmd0e207898a428c4f2ba531da97e062ec93824c664383",
+      "customMetadata": [],
+      "createdAt": "2026-09-05T20:00:59.411Z"
     }
   ],
   "blockchainTransactions": [
+    {
+      "id": 14,
+      "transactionHash": "0xbf7d5f3286c9ab1db8a8c6cef24565697c0fbe21d879094414434ab5a315b890",
+      "entityType": "ASSET",
+      "entityId": "6",
+      "blockchainOperation": "ANCHOR_ASSET",
+      "status": "SUCCESS",
+      "blockNumber": 142876,
+      "timestamp": "2026-09-05T20:00:59.411Z",
+      "errorMessage": null
+    },
+    {
+      "id": 13,
+      "transactionHash": "0x977ab9f63fc554b3dff48b5d712f348deb2d19712eb0104d178d03d97df9efae",
+      "entityType": "ASSET",
+      "entityId": "5",
+      "blockchainOperation": "ANCHOR_ASSET",
+      "status": "SUCCESS",
+      "blockNumber": 142875,
+      "timestamp": "2026-09-05T19:53:17.922Z",
+      "errorMessage": null
+    },
+    {
+      "id": 12,
+      "transactionHash": "0xb22a3a2de55044a5a28ab7e1f775613cda94d36e90df487dc28de383ed4be0e3",
+      "entityType": "ASSET",
+      "entityId": "4",
+      "blockchainOperation": "ANCHOR_ASSET",
+      "status": "SUCCESS",
+      "blockNumber": 142874,
+      "timestamp": "2026-09-05T19:46:11.671Z",
+      "errorMessage": null
+    },
     {
       "id": 11,
       "transactionHash": "0x3fce77c77de2c72c55a23e0eccedbdccd93c09dc50afc70fc3fa3448e1bd6d71",
@@ -539,6 +623,66 @@
     }
   ],
   "auditLogs": [
+    {
+      "id": 49,
+      "username": "user",
+      "action": "ASSET_CREATED",
+      "entityType": "ASSET",
+      "entityId": "6",
+      "timestamp": "2026-09-05T20:00:59.418Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 48,
+      "username": "user",
+      "action": "ASSET_CREATED",
+      "entityType": "ASSET",
+      "entityId": "5",
+      "timestamp": "2026-09-05T19:53:17.923Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 47,
+      "username": "superadmin",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "1",
+      "timestamp": "2026-09-05T19:52:47.674Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 46,
+      "username": "user",
+      "action": "ASSET_CREATED",
+      "entityType": "ASSET",
+      "entityId": "4",
+      "timestamp": "2026-09-05T19:46:11.673Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 45,
+      "username": "superadmin",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "1",
+      "timestamp": "2026-09-05T19:45:34.448Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 44,
+      "username": "so",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "7",
+      "timestamp": "2026-09-05T19:40:59.075Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
     {
       "id": 43,
       "username": "s",

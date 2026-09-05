@@ -104,6 +104,7 @@ export function AssetsPage() {
       formData.append("file", selectedFile);
       formData.append("assetName", form.assetName);
       formData.append("description", form.assetDescription);
+      formData.append("assetType", form.assetType);
       formData.append("ownerId", String(form.userId));
       
       const data = await digitalAssetApi.uploadDigitalAsset(formData);
