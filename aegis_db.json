@@ -1,0 +1,1174 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "organizationId": 1,
+      "departmentId": 1,
+      "employeeCode": "EMP-001",
+      "username": "superadmin",
+      "email": "superadmin@aegisid.io",
+      "fullName": "Aegis Master Admin",
+      "status": "SUSPENDED",
+      "role": "SUPER_ADMIN",
+      "createdAt": "2026-09-05T19:47:42.677Z",
+      "updatedAt": "2026-09-06T13:56:57.195Z"
+    },
+    {
+      "id": 2,
+      "organizationId": 1,
+      "departmentId": 1,
+      "employeeCode": "EMP-002",
+      "username": "admin",
+      "email": "admin@aegisid.io",
+      "fullName": "System Admin",
+      "status": "ACTIVE",
+      "role": "ADMIN",
+      "createdAt": "2026-09-05T19:47:42.677Z",
+      "updatedAt": "2026-09-05T19:47:42.677Z"
+    },
+    {
+      "id": 3,
+      "organizationId": 2,
+      "departmentId": 2,
+      "employeeCode": "EMP-003",
+      "username": "issuer",
+      "email": "issuer@gov.auth",
+      "fullName": "Credential Issuer Officer",
+      "status": "ACTIVE",
+      "role": "ISSUER",
+      "createdAt": "2026-09-05T19:47:42.677Z",
+      "updatedAt": "2026-09-05T19:47:42.677Z"
+    },
+    {
+      "id": 4,
+      "organizationId": 3,
+      "departmentId": 3,
+      "employeeCode": "EMP-004",
+      "username": "verifier",
+      "email": "verifier@verify.org",
+      "fullName": "Security Verifier Agent",
+      "status": "ACTIVE",
+      "role": "VERIFIER",
+      "createdAt": "2026-09-05T19:47:42.677Z",
+      "updatedAt": "2026-09-05T19:47:42.677Z"
+    },
+    {
+      "id": 5,
+      "organizationId": 4,
+      "departmentId": 4,
+      "employeeCode": "EMP-005",
+      "username": "johndoe",
+      "email": "john.doe@techcorp.com",
+      "fullName": "John Doe",
+      "status": "ACTIVE",
+      "role": "USER",
+      "createdAt": "2026-09-05T19:47:42.677Z",
+      "updatedAt": "2026-09-05T19:47:42.677Z"
+    },
+    {
+      "id": 6,
+      "organizationId": 1,
+      "departmentId": 1,
+      "employeeCode": "EMP-15",
+      "username": "s",
+      "email": "soumyajitsaha.miit@gmail.com",
+      "fullName": "Soumyajit",
+      "password": "soumya1",
+      "status": "ACTIVE",
+      "role": "USER",
+      "createdAt": "2026-09-05T23:25:39.294Z",
+      "updatedAt": "2026-09-05T23:25:39.294Z"
+    },
+    {
+      "id": 7,
+      "organizationId": 1,
+      "departmentId": 1,
+      "employeeCode": "EMP-16",
+      "username": "sou",
+      "email": "soumyajitsaha.miit@gmail.com",
+      "fullName": "Soumyajit Saha",
+      "password": "soumya1",
+      "status": "ACTIVE",
+      "role": "USER",
+      "createdAt": "2026-09-06T13:57:29.075Z",
+      "updatedAt": "2026-09-06T13:57:29.075Z"
+    }
+  ],
+  "organizations": [
+    {
+      "id": 1,
+      "name": "Aegis Global Foundation",
+      "code": "AEGIS",
+      "country": "Switzerland",
+      "status": "ACTIVE"
+    },
+    {
+      "id": 2,
+      "name": "National Identity Authority",
+      "code": "NIA",
+      "country": "United States",
+      "status": "ACTIVE"
+    },
+    {
+      "id": 3,
+      "name": "Global Security Agency",
+      "code": "GSA",
+      "country": "United Kingdom",
+      "status": "ACTIVE"
+    },
+    {
+      "id": 4,
+      "name": "TechCorp Global Ltd",
+      "code": "TECH",
+      "country": "Singapore",
+      "status": "ACTIVE"
+    }
+  ],
+  "departments": [
+    {
+      "id": 1,
+      "organizationId": 1,
+      "name": "Core Architecture",
+      "code": "CORE"
+    },
+    {
+      "id": 2,
+      "organizationId": 2,
+      "name": "Credential Issuance Bureau",
+      "code": "CIB"
+    },
+    {
+      "id": 3,
+      "organizationId": 3,
+      "name": "Verification & Compliance",
+      "code": "VC"
+    },
+    {
+      "id": 4,
+      "organizationId": 4,
+      "name": "Engineering & IT",
+      "code": "ENG"
+    }
+  ],
+  "roles": [
+    {
+      "id": 1,
+      "name": "SUPER_ADMIN",
+      "description": "Full system access & administration"
+    },
+    {
+      "id": 2,
+      "name": "ADMIN",
+      "description": "Management of users, orgs, and policies"
+    },
+    {
+      "id": 3,
+      "name": "ISSUER",
+      "description": "Issue and revoke verifiable credentials"
+    },
+    {
+      "id": 4,
+      "name": "VERIFIER",
+      "description": "Perform cryptographic & blockchain verification"
+    },
+    {
+      "id": 5,
+      "name": "USER",
+      "description": "Standard user identity & digital asset holder"
+    }
+  ],
+  "permissions": [
+    {
+      "id": 1,
+      "name": "USER_READ"
+    },
+    {
+      "id": 2,
+      "name": "USER_CREATE"
+    },
+    {
+      "id": 3,
+      "name": "USER_UPDATE"
+    },
+    {
+      "id": 4,
+      "name": "USER_DELETE"
+    },
+    {
+      "id": 5,
+      "name": "ROLE_READ"
+    },
+    {
+      "id": 6,
+      "name": "ROLE_CREATE"
+    },
+    {
+      "id": 7,
+      "name": "ROLE_UPDATE"
+    },
+    {
+      "id": 8,
+      "name": "ROLE_DELETE"
+    },
+    {
+      "id": 9,
+      "name": "PERMISSION_READ"
+    },
+    {
+      "id": 10,
+      "name": "IDENTITY_READ"
+    },
+    {
+      "id": 11,
+      "name": "IDENTITY_CREATE"
+    },
+    {
+      "id": 12,
+      "name": "IDENTITY_VERIFY"
+    },
+    {
+      "id": 13,
+      "name": "IDENTITY_SUSPEND"
+    },
+    {
+      "id": 14,
+      "name": "IDENTITY_REVOKED"
+    },
+    {
+      "id": 15,
+      "name": "CREDENTIAL_READ"
+    },
+    {
+      "id": 16,
+      "name": "CREDENTIAL_CREATE"
+    },
+    {
+      "id": 17,
+      "name": "CREDENTIAL_VERIFY"
+    },
+    {
+      "id": 18,
+      "name": "CREDENTIAL_REVOKE"
+    },
+    {
+      "id": 19,
+      "name": "ASSET_READ"
+    },
+    {
+      "id": 20,
+      "name": "ASSET_CREATE"
+    },
+    {
+      "id": 21,
+      "name": "ASSET_UPDATE"
+    },
+    {
+      "id": 22,
+      "name": "ASSET_DELETE"
+    },
+    {
+      "id": 23,
+      "name": "BLOCKCHAIN_READ"
+    },
+    {
+      "id": 24,
+      "name": "BLOCKCHAIN_WRITE"
+    },
+    {
+      "id": 25,
+      "name": "AUDIT_READ"
+    }
+  ],
+  "rolePermissions": [
+    {
+      "roleId": 1,
+      "permissionId": 1
+    },
+    {
+      "roleId": 1,
+      "permissionId": 2
+    },
+    {
+      "roleId": 1,
+      "permissionId": 3
+    },
+    {
+      "roleId": 1,
+      "permissionId": 4
+    },
+    {
+      "roleId": 1,
+      "permissionId": 11
+    },
+    {
+      "roleId": 1,
+      "permissionId": 12
+    },
+    {
+      "roleId": 1,
+      "permissionId": 16
+    },
+    {
+      "roleId": 1,
+      "permissionId": 18
+    },
+    {
+      "roleId": 1,
+      "permissionId": 20
+    },
+    {
+      "roleId": 1,
+      "permissionId": 24
+    },
+    {
+      "roleId": 1,
+      "permissionId": 25
+    }
+  ],
+  "identities": [
+    {
+      "id": 1,
+      "userId": 5,
+      "did": "did:aegis:techcorp:5f8d9b1a2c3e4f6",
+      "walletAddress": "0x71C359918E7E91c667104b90C5b0C627c54143a5",
+      "verificationStatus": "VERIFIED",
+      "identityStatus": "ACTIVE",
+      "identityHash": "0xa1b2c3d4e5f67890123456789abcdef0123456789abcdef0123456789abcdef0",
+      "createdAt": "2026-09-05T19:47:42.677Z",
+      "updatedAt": "2026-09-06T13:48:43.555Z"
+    },
+    {
+      "id": 2,
+      "userId": 6,
+      "did": "did:aegis:user:6:pd9c4ld",
+      "walletAddress": "0x71C359918E7E91c667104b90C5b0C627c54143a5",
+      "verificationStatus": "VERIFIED",
+      "identityStatus": "ACTIVE",
+      "identityHash": "0x5de0741d551b8bc5b2be94eded5a35e4a292403093e016f75a810a5c9ebc5736",
+      "createdAt": "2026-09-06T13:48:09.146Z",
+      "updatedAt": "2026-09-06T13:48:09.146Z"
+    }
+  ],
+  "credentials": [
+    {
+      "id": 1,
+      "identityId": 1,
+      "issuerId": 3,
+      "credentialType": "DigitalPassportCredential",
+      "credentialHash": "0xb2c3d4e5f6a17890123456789abcdef0123456789abcdef0123456789abcdef1",
+      "status": "ACTIVE",
+      "issuedAt": "2026-09-05T19:47:42.677Z",
+      "expiresAt": "2027-09-05T19:47:42.677Z",
+      "blockchainTxHash": "0x9876543210abcdef9876543210abcdef9876543210abcdef9876543210abcdef"
+    },
+    {
+      "id": 2,
+      "identityId": 6,
+      "issuerId": 2,
+      "credentialType": "DigitalPassportCredential",
+      "credentialHash": "0xb891b7ddcd8cda78d5736ee84b9f9fdf0f920734cb5d07f879942b9ea3fb8737",
+      "status": "ACTIVE",
+      "issuedAt": "2026-09-06T13:49:05.009Z",
+      "expiresAt": "2027-09-06T13:49:05.009Z",
+      "blockchainTxHash": "0x0fc6373c1b67dd2045fa019a72a295043680f640bf653e93434ada6e0927c6f9"
+    }
+  ],
+  "assets": [
+    {
+      "id": 1,
+      "assetId": "AST-2026-F981CBA2",
+      "userId": 5,
+      "assetName": "Secure Enterprise IP Certificate #402",
+      "assetType": "IntellectualProperty",
+      "assetHash": "0xc3d4e5f6a1b27890123456789abcdef0123456789abcdef0123456789abcdef2",
+      "ownerAddress": "0x71C359918E7E91c667104b90C5b0C627c54143a5",
+      "status": "ACTIVE",
+      "blockchainTxHash": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+      "createdAt": "2026-09-05T19:47:42.677Z"
+    },
+    {
+      "id": 2,
+      "assetId": "AST-2026-140B4B70",
+      "userId": 5,
+      "assetName": "Test Asset",
+      "assetType": "FinancialInstrument",
+      "assetHash": "0xe19e13d449c638399828095d826694f783f0f3bc4873c8e684d8eba68a249e0d",
+      "ownerAddress": "0x71C359918E7E91c667104b90C5b0C627c54143a5",
+      "status": "ACTIVE",
+      "blockchainTxHash": "0x6e7e425a41bec961dc88c097e4c496b7ffe5d6060490928596e51891925f6da0",
+      "fileName": null,
+      "fileFormat": null,
+      "storageFolder": null,
+      "storageAddress": null,
+      "customMetadata": [],
+      "createdAt": "2026-09-05T20:58:17.959Z"
+    },
+    {
+      "id": 3,
+      "assetId": "AST-2026-8B3031CD",
+      "userId": 5,
+      "assetName": "Test Asset",
+      "assetType": "FinancialInstrument",
+      "assetHash": "0xe4236cf439f8a33ec4a60106f82f1114ca18b53ad749474c1f2a8b0613d666a5",
+      "ownerAddress": "0x71C359918E7E91c667104b90C5b0C627c54143a5",
+      "status": "ACTIVE",
+      "blockchainTxHash": "0x51a6a954ce7549c6eb26472915ef6a89163a2a7c1d29597a6b1ce04295b64226",
+      "fileName": "package.json",
+      "fileFormat": "JSON",
+      "storageFolder": "/storage/assets/user-5/",
+      "storageAddress": "ipfs://Qm1fdab1d76a4103e2224becdfd87614f4482e923d48e3",
+      "customMetadata": [],
+      "createdAt": "2026-09-05T21:13:53.872Z"
+    },
+    {
+      "id": 4,
+      "assetId": "AST-2026-0D8B6690",
+      "userId": 4,
+      "assetName": "Deed#1",
+      "assetType": "Certificate",
+      "assetHash": "0xa6a6b4d11622cd41bffa9c5ba406683a3e2a59ee447dd294d3c3f6192ed335c5",
+      "ownerAddress": "0x71C359918E7E91c667104b90C5b0C627c54143a5",
+      "status": "ACTIVE",
+      "blockchainTxHash": "0x6bebbd4b14da764d365070ba65c709a57a983f8c27941aefc5dfdfef9a63a558",
+      "fileName": "Sequence.png",
+      "fileFormat": "PNG",
+      "storageFolder": "/storage/assets/user-4/",
+      "storageAddress": "ipfs://Qm029add235d9c432aee96a7be45d3d1c978eddd61a684",
+      "customMetadata": [],
+      "createdAt": "2026-09-05T23:15:07.654Z"
+    },
+    {
+      "id": 5,
+      "assetId": "AST-2026-33E00D73",
+      "userId": 6,
+      "assetName": "Deed#56",
+      "assetType": "FinancialInstrument",
+      "assetHash": "0x82ff9dc98e2cf7a279683a206e05e07e018e268b69c2671fe9086ea8d286e95e",
+      "ownerAddress": "0x71C359918E7E91c667104b90C5b0C627c54143a5",
+      "status": "ACTIVE",
+      "blockchainTxHash": "0x52b4c519ef5dfc6f2d534bb6d2e46b1c8b1715f5dbeb62e985eae2957b8dbfda",
+      "fileName": "Sequence.png",
+      "fileFormat": "PNG",
+      "storageFolder": "/storage/assets/user-4/",
+      "storageAddress": "ipfs://Qm87a10dfabccf97eb1c99b0d6d5bf486cd651eb1df0e1",
+      "customMetadata": [],
+      "createdAt": "2026-09-05T23:17:47.128Z"
+    },
+    {
+      "id": 6,
+      "assetId": "AST-2026-D99D7EB6",
+      "userId": 6,
+      "assetName": "Deed#24",
+      "assetType": "DigitalIP",
+      "assetHash": "0x2285a55da3bf52c731678ea4dcb12c5a1644218686697b48cf425c32f00680ea",
+      "ownerAddress": "0x71C359918E7E91c667104b90C5b0C627c54143a5",
+      "status": "ACTIVE",
+      "blockchainTxHash": "0x8a316bd0cbfa28e5177f1f2c2725e98e0c898c7b01c391514ef067e05ec51169",
+      "fileName": "Sequence (1).png",
+      "fileFormat": "PNG",
+      "storageFolder": "/storage/assets/user-5/",
+      "storageAddress": "ipfs://Qm8dff856cd12653a225074f8c3a602c1399d52817c901",
+      "customMetadata": [],
+      "createdAt": "2026-09-05T23:18:58.843Z"
+    },
+    {
+      "id": 7,
+      "assetId": "AST-2026-FE6C72C6",
+      "userId": 5,
+      "assetName": "Deed#34",
+      "assetType": "IdentityRecord",
+      "assetHash": "0xb17758c39f3c32597dcffe06cd5c2b0af17a67b71e91b77458e59c6eac333e1f",
+      "ownerAddress": "0x71C359918E7E91c667104b90C5b0C627c54143a5",
+      "status": "ACTIVE",
+      "blockchainTxHash": "0x0abb9b6a799a3aff0927b7736f161349b947df5e616c9863808ad17ac0a7708c",
+      "fileName": "Architecture.png",
+      "fileFormat": "PNG",
+      "storageFolder": "/storage/assets/user-5/",
+      "storageAddress": "ipfs://Qme85831304097b5fde909b6ecfe17a6bb44af826019b8",
+      "customMetadata": [],
+      "createdAt": "2026-09-05T23:24:36.133Z"
+    },
+    {
+      "id": 8,
+      "assetId": "AST-2026-7CBDC655",
+      "userId": 6,
+      "assetName": "Deed#25",
+      "assetType": "Certificate",
+      "assetHash": "0x615657ef23afe4018c5f043f62158010ecd8ec3b6544f7adf0de817af1b76b83",
+      "ownerAddress": "0x71C359918E7E91c667104b90C5b0C627c54143a5",
+      "status": "ACTIVE",
+      "blockchainTxHash": "0x12097f5dd8aa71f8f19b4b05abef858ae11bb891ab4cadaba871c81ec845bf9d",
+      "fileName": "Sequence (1).png",
+      "fileFormat": "PNG",
+      "storageFolder": "/storage/assets/user-6/",
+      "storageAddress": "ipfs://Qm3afdb03636fe9c67965d15149f2d6e1f2fc1bf182e13",
+      "customMetadata": [],
+      "createdAt": "2026-09-06T08:13:15.323Z"
+    },
+    {
+      "id": 9,
+      "assetId": "AST-2026-B4A98337",
+      "userId": 6,
+      "assetName": "Deed#20",
+      "assetType": "DigitalIP",
+      "assetHash": "0x99d0611b19c4e0a4bfe5caae7f37dae1b679bd6f0bbb84303d6ec0d208736073",
+      "ownerAddress": "0x71C359918E7E91c667104b90C5b0C627c54143a5",
+      "status": "ACTIVE",
+      "blockchainTxHash": "0x543b8561af459604ea955cf117757e4c75e97c26bef57c21a5c8f6cac3939577",
+      "fileName": "Architecture (1).png",
+      "fileFormat": "PNG",
+      "storageFolder": "/storage/assets/user-6/",
+      "storageAddress": "ipfs://Qmfd18f52029e7de0cf9c4ffb173d2c424671211da0c4c",
+      "customMetadata": [],
+      "createdAt": "2026-09-06T08:32:56.552Z"
+    },
+    {
+      "id": 10,
+      "assetId": "AST-2026-5CA5E1E3",
+      "userId": 6,
+      "assetName": "Deed#34",
+      "assetType": "DigitalIP",
+      "assetHash": "0x7116d88d8b4163230eee6f353c2e50969543df4951d19e02583620206c356e74",
+      "ownerAddress": "0x71C359918E7E91c667104b90C5b0C627c54143a5",
+      "status": "ACTIVE",
+      "blockchainTxHash": "0x7062456251fda653923f2df459d90c8aad5170b961fbf507fbc75651db2e55b6",
+      "fileName": "Sequence (1).png",
+      "fileFormat": "PNG",
+      "storageFolder": "/storage/assets/user-6/",
+      "storageAddress": "ipfs://Qm741a70c234cf1b18a297bca37fc770c44830ef6a8138",
+      "customMetadata": [],
+      "createdAt": "2026-09-06T09:00:50.359Z"
+    },
+    {
+      "id": 11,
+      "assetId": "AST-2026-574C4A90",
+      "userId": 6,
+      "assetName": "Deed#35",
+      "assetType": "IntellectualProperty",
+      "assetHash": "0xf1227928fce1a94befde316219ceba2ab58919a8fd55225f2cc6b1564ef3a70a",
+      "ownerAddress": "0x71C359918E7E91c667104b90C5b0C627c54143a5",
+      "status": "ACTIVE",
+      "blockchainTxHash": "0x3f73ff573b7e1b6a2421020f0dc22fa26e2497afa37e47ef81ad447f3583ae62",
+      "fileName": "Architecture (2).png",
+      "fileFormat": "PNG",
+      "storageFolder": "/storage/assets/user-6/",
+      "storageAddress": "ipfs://Qm85a798b94734d877baaaf47ace0554253deb139ed262",
+      "customMetadata": [],
+      "createdAt": "2026-09-06T13:21:49.747Z"
+    }
+  ],
+  "blockchainTransactions": [
+    {
+      "id": 20,
+      "transactionHash": "0xd97dc800964693bffc0ad0f4de04e634923de4739cb4bbbf3d93647851e775f3",
+      "entityType": "ASSET",
+      "entityId": "6",
+      "blockchainOperation": "TRANSFER_ASSET",
+      "status": "SUCCESS",
+      "blockNumber": 142889,
+      "timestamp": "2026-09-06T13:53:05.476Z",
+      "errorMessage": null
+    },
+    {
+      "id": 19,
+      "transactionHash": "0xcd9af64b3dc5def2ab39122e9e80442d3d9361e1ed4b3e37b56c3485bf4522ff",
+      "entityType": "ASSET",
+      "entityId": "8",
+      "blockchainOperation": "ACTIVATE_ASSET",
+      "status": "SUCCESS",
+      "blockNumber": 142888,
+      "timestamp": "2026-09-06T13:52:33.567Z",
+      "errorMessage": null
+    },
+    {
+      "id": 18,
+      "transactionHash": "0xf3cf488a4695a76aa78d522798685dc594ab6d4fcdf0ee20684da9478bfa476d",
+      "entityType": "ASSET",
+      "entityId": "8",
+      "blockchainOperation": "SUSPEND_ASSET",
+      "status": "SUCCESS",
+      "blockNumber": 142887,
+      "timestamp": "2026-09-06T13:52:27.357Z",
+      "errorMessage": null
+    },
+    {
+      "id": 17,
+      "transactionHash": "0x0fc6373c1b67dd2045fa019a72a295043680f640bf653e93434ada6e0927c6f9",
+      "entityType": "CREDENTIAL",
+      "entityId": "2",
+      "blockchainOperation": "ANCHOR_CREDENTIAL",
+      "status": "SUCCESS",
+      "blockNumber": 142862,
+      "timestamp": "2026-09-06T13:49:05.009Z",
+      "errorMessage": null
+    },
+    {
+      "id": 16,
+      "transactionHash": "0xf847ff21fb8d2276b36a1777faab6f9c6bed856be72982fbe9f80fcdea960898",
+      "entityType": "IDENTITY",
+      "entityId": "2",
+      "blockchainOperation": "ANCHOR_IDENTITY",
+      "status": "SUCCESS",
+      "blockNumber": 142867,
+      "timestamp": "2026-09-06T13:48:09.146Z",
+      "errorMessage": null
+    },
+    {
+      "id": 15,
+      "transactionHash": "0x3f73ff573b7e1b6a2421020f0dc22fa26e2497afa37e47ef81ad447f3583ae62",
+      "entityType": "ASSET",
+      "entityId": "11",
+      "blockchainOperation": "ANCHOR_ASSET",
+      "status": "SUCCESS",
+      "blockNumber": 142881,
+      "timestamp": "2026-09-06T13:21:49.747Z",
+      "errorMessage": null
+    },
+    {
+      "id": 14,
+      "transactionHash": "0x7062456251fda653923f2df459d90c8aad5170b961fbf507fbc75651db2e55b6",
+      "entityType": "ASSET",
+      "entityId": "10",
+      "blockchainOperation": "ANCHOR_ASSET",
+      "status": "SUCCESS",
+      "blockNumber": 142880,
+      "timestamp": "2026-09-06T09:00:50.359Z",
+      "errorMessage": null
+    },
+    {
+      "id": 13,
+      "transactionHash": "0x01b9b9dc2139a1725842350be0719f6a388387d1ff0ab58dbd0f44115a3760b7",
+      "entityType": "ASSET",
+      "entityId": "5",
+      "blockchainOperation": "TRANSFER_ASSET",
+      "status": "SUCCESS",
+      "blockNumber": 142882,
+      "timestamp": "2026-09-06T08:47:23.962Z",
+      "errorMessage": null
+    },
+    {
+      "id": 12,
+      "transactionHash": "0x0ee3bbfc7032d77e2abf936fc7f3ca9f65e5cbd2d77c0cc8d20bd22c34020718",
+      "entityType": "ASSET",
+      "entityId": "9",
+      "blockchainOperation": "ACTIVATE_ASSET",
+      "status": "SUCCESS",
+      "blockNumber": 142881,
+      "timestamp": "2026-09-06T08:47:09.478Z",
+      "errorMessage": null
+    },
+    {
+      "id": 11,
+      "transactionHash": "0x71df797ddef11b7bb68366025601007ce0b42f60ea86d53a8306f2d113be3ade",
+      "entityType": "ASSET",
+      "entityId": "9",
+      "blockchainOperation": "SUSPEND_ASSET",
+      "status": "SUCCESS",
+      "blockNumber": 142880,
+      "timestamp": "2026-09-06T08:46:17.251Z",
+      "errorMessage": null
+    },
+    {
+      "id": 10,
+      "transactionHash": "0x543b8561af459604ea955cf117757e4c75e97c26bef57c21a5c8f6cac3939577",
+      "entityType": "ASSET",
+      "entityId": "9",
+      "blockchainOperation": "ANCHOR_ASSET",
+      "status": "SUCCESS",
+      "blockNumber": 142879,
+      "timestamp": "2026-09-06T08:32:56.552Z",
+      "errorMessage": null
+    },
+    {
+      "id": 9,
+      "transactionHash": "0x12097f5dd8aa71f8f19b4b05abef858ae11bb891ab4cadaba871c81ec845bf9d",
+      "entityType": "ASSET",
+      "entityId": "8",
+      "blockchainOperation": "ANCHOR_ASSET",
+      "status": "SUCCESS",
+      "blockNumber": 142878,
+      "timestamp": "2026-09-06T08:13:15.323Z",
+      "errorMessage": null
+    },
+    {
+      "id": 8,
+      "transactionHash": "0x0abb9b6a799a3aff0927b7736f161349b947df5e616c9863808ad17ac0a7708c",
+      "entityType": "ASSET",
+      "entityId": "7",
+      "blockchainOperation": "ANCHOR_ASSET",
+      "status": "SUCCESS",
+      "blockNumber": 142877,
+      "timestamp": "2026-09-05T23:24:36.134Z",
+      "errorMessage": null
+    },
+    {
+      "id": 7,
+      "transactionHash": "0x8a316bd0cbfa28e5177f1f2c2725e98e0c898c7b01c391514ef067e05ec51169",
+      "entityType": "ASSET",
+      "entityId": "6",
+      "blockchainOperation": "ANCHOR_ASSET",
+      "status": "SUCCESS",
+      "blockNumber": 142876,
+      "timestamp": "2026-09-05T23:18:58.843Z",
+      "errorMessage": null
+    },
+    {
+      "id": 6,
+      "transactionHash": "0x52b4c519ef5dfc6f2d534bb6d2e46b1c8b1715f5dbeb62e985eae2957b8dbfda",
+      "entityType": "ASSET",
+      "entityId": "5",
+      "blockchainOperation": "ANCHOR_ASSET",
+      "status": "SUCCESS",
+      "blockNumber": 142875,
+      "timestamp": "2026-09-05T23:17:47.128Z",
+      "errorMessage": null
+    },
+    {
+      "id": 5,
+      "transactionHash": "0x6bebbd4b14da764d365070ba65c709a57a983f8c27941aefc5dfdfef9a63a558",
+      "entityType": "ASSET",
+      "entityId": "4",
+      "blockchainOperation": "ANCHOR_ASSET",
+      "status": "SUCCESS",
+      "blockNumber": 142874,
+      "timestamp": "2026-09-05T23:15:07.655Z",
+      "errorMessage": null
+    },
+    {
+      "id": 4,
+      "transactionHash": "0x51a6a954ce7549c6eb26472915ef6a89163a2a7c1d29597a6b1ce04295b64226",
+      "entityType": "ASSET",
+      "entityId": "3",
+      "blockchainOperation": "ANCHOR_ASSET",
+      "status": "SUCCESS",
+      "blockNumber": 142873,
+      "timestamp": "2026-09-05T21:13:53.872Z",
+      "errorMessage": null
+    },
+    {
+      "id": 3,
+      "transactionHash": "0x6e7e425a41bec961dc88c097e4c496b7ffe5d6060490928596e51891925f6da0",
+      "entityType": "ASSET",
+      "entityId": "2",
+      "blockchainOperation": "ANCHOR_ASSET",
+      "status": "SUCCESS",
+      "blockNumber": 142872,
+      "timestamp": "2026-09-05T20:58:17.959Z",
+      "errorMessage": null
+    },
+    {
+      "id": 1,
+      "transactionHash": "0x9876543210abcdef9876543210abcdef9876543210abcdef9876543210abcdef",
+      "entityType": "CREDENTIAL",
+      "entityId": "1",
+      "blockchainOperation": "ANCHOR_CREDENTIAL",
+      "status": "SUCCESS",
+      "blockNumber": 142850,
+      "timestamp": "2026-09-05T19:47:42.677Z",
+      "errorMessage": null
+    },
+    {
+      "id": 2,
+      "transactionHash": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+      "entityType": "ASSET",
+      "entityId": "1",
+      "blockchainOperation": "ANCHOR_ASSET",
+      "status": "SUCCESS",
+      "blockNumber": 142851,
+      "timestamp": "2026-09-05T19:47:42.677Z",
+      "errorMessage": null
+    }
+  ],
+  "auditLogs": [
+    {
+      "id": 39,
+      "username": "superadmin",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "1",
+      "timestamp": "2026-09-06T14:01:44.367Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 38,
+      "username": "s",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "6",
+      "timestamp": "2026-09-06T13:59:51.683Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 37,
+      "username": "admin",
+      "action": "USER_CREATE",
+      "entityType": "USER",
+      "entityId": "7",
+      "timestamp": "2026-09-06T13:57:29.078Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 36,
+      "username": "admin",
+      "action": "USER_SUSPEND",
+      "entityType": "USER",
+      "entityId": "1",
+      "timestamp": "2026-09-06T13:56:57.198Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 35,
+      "username": "admin",
+      "action": "USER_SUSPEND",
+      "entityType": "USER",
+      "entityId": "1",
+      "timestamp": "2026-09-06T13:56:53.358Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 34,
+      "username": "admin",
+      "action": "ASSET_TRANSFER",
+      "entityType": "ASSET",
+      "entityId": "6",
+      "timestamp": "2026-09-06T13:53:05.480Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 33,
+      "username": "admin",
+      "action": "ASSET_ACTIVATE",
+      "entityType": "ASSET",
+      "entityId": "8",
+      "timestamp": "2026-09-06T13:52:33.570Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 32,
+      "username": "admin",
+      "action": "ASSET_SUSPEND",
+      "entityType": "ASSET",
+      "entityId": "8",
+      "timestamp": "2026-09-06T13:52:27.361Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 31,
+      "username": "issuer",
+      "action": "CREDENTIAL_CREATED",
+      "entityType": "CREDENTIAL",
+      "entityId": "2",
+      "timestamp": "2026-09-06T13:49:05.015Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 30,
+      "username": "admin",
+      "action": "IDENTITY_REACTIVATE",
+      "entityType": "IDENTITY",
+      "entityId": "1",
+      "timestamp": "2026-09-06T13:48:43.560Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 29,
+      "username": "admin",
+      "action": "IDENTITY_SUSPEND",
+      "entityType": "IDENTITY",
+      "entityId": "1",
+      "timestamp": "2026-09-06T13:48:38.484Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 28,
+      "username": "admin",
+      "action": "IDENTITY_CREATED",
+      "entityType": "IDENTITY",
+      "entityId": "2",
+      "timestamp": "2026-09-06T13:48:09.149Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 27,
+      "username": "superadmin",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "1",
+      "timestamp": "2026-09-06T13:46:44.653Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 26,
+      "username": "superadmin",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "1",
+      "timestamp": "2026-09-06T13:43:36.608Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 25,
+      "username": "superadmin",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "1",
+      "timestamp": "2026-09-06T13:37:55.923Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 24,
+      "username": "user",
+      "action": "ASSET_CREATED",
+      "entityType": "ASSET",
+      "entityId": "11",
+      "timestamp": "2026-09-06T13:21:49.752Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 23,
+      "username": "user",
+      "action": "ASSET_CREATED",
+      "entityType": "ASSET",
+      "entityId": "10",
+      "timestamp": "2026-09-06T09:00:50.362Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 22,
+      "username": "admin",
+      "action": "ASSET_TRANSFER",
+      "entityType": "ASSET",
+      "entityId": "5",
+      "timestamp": "2026-09-06T08:47:23.963Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 21,
+      "username": "admin",
+      "action": "ASSET_ACTIVATE",
+      "entityType": "ASSET",
+      "entityId": "9",
+      "timestamp": "2026-09-06T08:47:09.480Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 20,
+      "username": "superadmin",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "1",
+      "timestamp": "2026-09-06T08:46:57.309Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 19,
+      "username": "s",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "6",
+      "timestamp": "2026-09-06T08:46:33.231Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 18,
+      "username": "admin",
+      "action": "ASSET_SUSPEND",
+      "entityType": "ASSET",
+      "entityId": "9",
+      "timestamp": "2026-09-06T08:46:17.254Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 17,
+      "username": "user",
+      "action": "ASSET_CREATED",
+      "entityType": "ASSET",
+      "entityId": "9",
+      "timestamp": "2026-09-06T08:32:56.555Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 16,
+      "username": "superadmin",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "1",
+      "timestamp": "2026-09-06T08:23:17.392Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 15,
+      "username": "s",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "6",
+      "timestamp": "2026-09-06T08:17:42.485Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 14,
+      "username": "user",
+      "action": "ASSET_CREATED",
+      "entityType": "ASSET",
+      "entityId": "8",
+      "timestamp": "2026-09-06T08:13:15.326Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 13,
+      "username": "superadmin",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "1",
+      "timestamp": "2026-09-06T08:12:29.559Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 12,
+      "username": "superadmin",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "1",
+      "timestamp": "2026-09-06T08:11:50.006Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 11,
+      "username": "s",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "6",
+      "timestamp": "2026-09-05T23:26:02.036Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 10,
+      "username": "admin",
+      "action": "USER_CREATE",
+      "entityType": "USER",
+      "entityId": "6",
+      "timestamp": "2026-09-05T23:25:39.297Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 9,
+      "username": "user",
+      "action": "ASSET_CREATED",
+      "entityType": "ASSET",
+      "entityId": "7",
+      "timestamp": "2026-09-05T23:24:36.142Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 8,
+      "username": "user",
+      "action": "ASSET_CREATED",
+      "entityType": "ASSET",
+      "entityId": "6",
+      "timestamp": "2026-09-05T23:18:58.846Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 7,
+      "username": "user",
+      "action": "ASSET_CREATED",
+      "entityType": "ASSET",
+      "entityId": "5",
+      "timestamp": "2026-09-05T23:17:47.134Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 6,
+      "username": "user",
+      "action": "ASSET_CREATED",
+      "entityType": "ASSET",
+      "entityId": "4",
+      "timestamp": "2026-09-05T23:15:07.663Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 5,
+      "username": "user",
+      "action": "ASSET_CREATED",
+      "entityType": "ASSET",
+      "entityId": "3",
+      "timestamp": "2026-09-05T21:13:53.872Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 4,
+      "username": "user",
+      "action": "ASSET_CREATED",
+      "entityType": "ASSET",
+      "entityId": "2",
+      "timestamp": "2026-09-05T20:58:17.959Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 3,
+      "username": "superadmin",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "1",
+      "timestamp": "2026-09-05T19:48:52.583Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 1,
+      "username": "superadmin",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "1",
+      "timestamp": "2026-09-05T19:47:42.677Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 2,
+      "username": "issuer",
+      "action": "CREDENTIAL_CREATED",
+      "entityType": "CREDENTIAL",
+      "entityId": "1",
+      "timestamp": "2026-09-05T19:47:42.677Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    }
+  ]
+}
