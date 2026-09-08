@@ -540,6 +540,12 @@ Built for **Smart India Hackathon 2026**.
 
 ---
 
+## Diagram
+https://gitdiagram.com/SOUMYAJIT200515/AegisID
+
+---
+
+
 ## 📄 License
 
 AegisID is licensed under the **MIT License**.
