@@ -8,10 +8,11 @@
       "username": "superadmin",
       "email": "superadmin@aegisid.io",
       "fullName": "Aegis Master Admin",
-      "status": "SUSPENDED",
+      "status": "ACTIVE",
       "role": "SUPER_ADMIN",
       "createdAt": "2026-09-05T19:47:42.677Z",
-      "updatedAt": "2026-09-06T13:56:57.195Z"
+      "updatedAt": "2026-09-09T14:59:54.817Z",
+      "password": "password"
     },
     {
       "id": 2,
@@ -92,6 +93,20 @@
       "role": "USER",
       "createdAt": "2026-09-06T13:57:29.075Z",
       "updatedAt": "2026-09-06T13:57:29.075Z"
+    },
+    {
+      "id": 8,
+      "organizationId": 3,
+      "departmentId": 1,
+      "employeeCode": "EMP-17",
+      "username": "spandan",
+      "email": "dfskj@gmail.com",
+      "fullName": "Spandan Das",
+      "password": "spandan@26",
+      "status": "ACTIVE",
+      "role": "USER",
+      "createdAt": "2026-09-09T14:29:02.296Z",
+      "updatedAt": "2026-09-09T14:29:02.296Z"
     }
   ],
   "organizations": [
@@ -555,9 +570,98 @@
       "storageAddress": "ipfs://Qm85a798b94734d877baaaf47ace0554253deb139ed262",
       "customMetadata": [],
       "createdAt": "2026-09-06T13:21:49.747Z"
+    },
+    {
+      "id": 12,
+      "assetId": "AST-2026-E4864980",
+      "userId": 6,
+      "assetName": "Deed#47",
+      "assetType": "IdentityRecord",
+      "assetHash": "0xd69b8de59f13958bb13ef462a400621d226cfc28fcc50aa15bcea57babe6bfd4",
+      "ownerAddress": "0x71C359918E7E91c667104b90C5b0C627c54143a5",
+      "status": "ACTIVE",
+      "blockchainTxHash": "0xb94669d7ccd84b05e9955bd4f20f45a8a9d7da827bc1ae55f2c3cbf904286e7a",
+      "fileName": "Architecture.png",
+      "fileFormat": "PNG",
+      "storageFolder": "/storage/assets/user-6/",
+      "storageAddress": "ipfs://Qm6e4267d1da65704db311c9370bc60321293439ac08a7",
+      "customMetadata": [],
+      "createdAt": "2026-09-07T16:20:19.793Z"
+    },
+    {
+      "id": 13,
+      "assetId": "AST-2026-C75CA8B9",
+      "userId": 4,
+      "assetName": "Deed#34",
+      "assetType": "DigitalIP",
+      "assetHash": "0x67e001542105cad97f5a261caa952cea3872c2e6c339c064264af568863fb057",
+      "ownerAddress": "0x71C359918E7E91c667104b90C5b0C627c54143a5",
+      "status": "ACTIVE",
+      "blockchainTxHash": "0x41e8dba42745aef30d5594ad8b8e6087e43a7e9f11b4ea7ef90a1f3d6021d2a8",
+      "fileName": "impact.jpeg",
+      "fileFormat": "JPEG",
+      "storageFolder": "/storage/assets/user-6/",
+      "storageAddress": "ipfs://Qm2f32563ff0e95e33bc49ddee9f955e94b18315d7a771",
+      "customMetadata": [],
+      "createdAt": "2026-09-09T07:29:39.728Z"
     }
   ],
   "blockchainTransactions": [
+    {
+      "id": 25,
+      "transactionHash": "0x2b2af338146b09f2dec5483e7980ab46cd9ed2711f59c346f6f6cdd2bf4e61a0",
+      "entityType": "ASSET",
+      "entityId": "13",
+      "blockchainOperation": "ACTIVATE_ASSET",
+      "status": "SUCCESS",
+      "blockNumber": 142894,
+      "timestamp": "2026-09-09T07:30:31.992Z",
+      "errorMessage": null
+    },
+    {
+      "id": 24,
+      "transactionHash": "0x0c419567ad6dcf1bfc2b84dd38123127aee17d44ec01e9220778008342b90f59",
+      "entityType": "ASSET",
+      "entityId": "13",
+      "blockchainOperation": "SUSPEND_ASSET",
+      "status": "SUCCESS",
+      "blockNumber": 142893,
+      "timestamp": "2026-09-09T07:30:27.328Z",
+      "errorMessage": null
+    },
+    {
+      "id": 23,
+      "transactionHash": "0x78aa474b97e350a259564472c5e73770a292d5384fc708048418b38e34156e40",
+      "entityType": "ASSET",
+      "entityId": "13",
+      "blockchainOperation": "TRANSFER_ASSET",
+      "status": "SUCCESS",
+      "blockNumber": 142892,
+      "timestamp": "2026-09-09T07:30:16.350Z",
+      "errorMessage": null
+    },
+    {
+      "id": 22,
+      "transactionHash": "0x41e8dba42745aef30d5594ad8b8e6087e43a7e9f11b4ea7ef90a1f3d6021d2a8",
+      "entityType": "ASSET",
+      "entityId": "13",
+      "blockchainOperation": "ANCHOR_ASSET",
+      "status": "SUCCESS",
+      "blockNumber": 142883,
+      "timestamp": "2026-09-09T07:29:39.728Z",
+      "errorMessage": null
+    },
+    {
+      "id": 21,
+      "transactionHash": "0xb94669d7ccd84b05e9955bd4f20f45a8a9d7da827bc1ae55f2c3cbf904286e7a",
+      "entityType": "ASSET",
+      "entityId": "12",
+      "blockchainOperation": "ANCHOR_ASSET",
+      "status": "SUCCESS",
+      "blockNumber": 142882,
+      "timestamp": "2026-09-07T16:20:19.793Z",
+      "errorMessage": null
+    },
     {
       "id": 20,
       "transactionHash": "0xd97dc800964693bffc0ad0f4de04e634923de4739cb4bbbf3d93647851e775f3",
@@ -780,6 +884,356 @@
     }
   ],
   "auditLogs": [
+    {
+      "id": 74,
+      "username": "superadmin",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "1",
+      "timestamp": "2026-09-09T16:10:34.008Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 73,
+      "username": "s",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "6",
+      "timestamp": "2026-09-09T16:09:34.783Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 72,
+      "username": "admin",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "2",
+      "timestamp": "2026-09-09T16:09:08.232Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 71,
+      "username": "superadmin",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "1",
+      "timestamp": "2026-09-09T16:07:18.958Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 70,
+      "username": "admin",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "2",
+      "timestamp": "2026-09-09T15:11:57.036Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 69,
+      "username": "superadmin",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "1",
+      "timestamp": "2026-09-09T15:10:32.576Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 68,
+      "username": "admin",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "2",
+      "timestamp": "2026-09-09T15:04:14.820Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 67,
+      "username": "issuer",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "3",
+      "timestamp": "2026-09-09T15:03:15.082Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 66,
+      "username": "admin",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "2",
+      "timestamp": "2026-09-09T15:02:42.136Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 65,
+      "username": "s",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "6",
+      "timestamp": "2026-09-09T15:02:23.238Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 64,
+      "username": "superadmin",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "1",
+      "timestamp": "2026-09-09T15:01:58.274Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 63,
+      "username": "admin",
+      "action": "USER_UPDATE",
+      "entityType": "USER",
+      "entityId": "1",
+      "timestamp": "2026-09-09T14:59:54.822Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 62,
+      "username": "superadmin",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "1",
+      "timestamp": "2026-09-09T14:59:30.323Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 61,
+      "username": "superadmin",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "0",
+      "timestamp": "2026-09-09T14:59:23.209Z",
+      "result": "FAILED",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 60,
+      "username": "admin",
+      "action": "USER_UPDATE",
+      "entityType": "USER",
+      "entityId": "1",
+      "timestamp": "2026-09-09T14:59:08.832Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 59,
+      "username": "superadmin",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "1",
+      "timestamp": "2026-09-09T14:58:40.107Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 58,
+      "username": "admin",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "2",
+      "timestamp": "2026-09-09T14:58:15.032Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 57,
+      "username": "superadmin",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "1",
+      "timestamp": "2026-09-09T14:57:39.513Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 56,
+      "username": "spandan",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "8",
+      "timestamp": "2026-09-09T14:35:44.870Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 55,
+      "username": "spandan",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "0",
+      "timestamp": "2026-09-09T14:35:24.963Z",
+      "result": "FAILED",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 54,
+      "username": "spandan",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "0",
+      "timestamp": "2026-09-09T14:35:04.147Z",
+      "result": "FAILED",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 53,
+      "username": "spandan",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "8",
+      "timestamp": "2026-09-09T14:33:39.642Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 52,
+      "username": "superadmin",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "1",
+      "timestamp": "2026-09-09T14:30:52.734Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 51,
+      "username": "admin",
+      "action": "APPLICATION_APPROVE",
+      "entityType": "USER",
+      "entityId": "8",
+      "timestamp": "2026-09-09T14:29:02.300Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 50,
+      "username": "admin",
+      "action": "USER_ACTIVATE",
+      "entityType": "USER",
+      "entityId": "1",
+      "timestamp": "2026-09-09T14:28:48.230Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 49,
+      "username": "superadmin",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "1",
+      "timestamp": "2026-09-09T14:28:39.552Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 48,
+      "username": "admin",
+      "action": "ASSET_ACTIVATE",
+      "entityType": "ASSET",
+      "entityId": "13",
+      "timestamp": "2026-09-09T07:30:32.015Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 47,
+      "username": "admin",
+      "action": "ASSET_SUSPEND",
+      "entityType": "ASSET",
+      "entityId": "13",
+      "timestamp": "2026-09-09T07:30:27.337Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 46,
+      "username": "admin",
+      "action": "ASSET_TRANSFER",
+      "entityType": "ASSET",
+      "entityId": "13",
+      "timestamp": "2026-09-09T07:30:16.355Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 45,
+      "username": "user",
+      "action": "ASSET_CREATED",
+      "entityType": "ASSET",
+      "entityId": "13",
+      "timestamp": "2026-09-09T07:29:39.731Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 44,
+      "username": "superadmin",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "1",
+      "timestamp": "2026-09-09T07:27:16.246Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 43,
+      "username": "superadmin",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "1",
+      "timestamp": "2026-09-08T17:51:05.221Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 42,
+      "username": "s",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "6",
+      "timestamp": "2026-09-07T16:20:56.594Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 41,
+      "username": "user",
+      "action": "ASSET_CREATED",
+      "entityType": "ASSET",
+      "entityId": "12",
+      "timestamp": "2026-09-07T16:20:19.797Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
+    {
+      "id": 40,
+      "username": "superadmin",
+      "action": "LOGIN",
+      "entityType": "USER",
+      "entityId": "1",
+      "timestamp": "2026-09-07T16:19:43.801Z",
+      "result": "SUCCESS",
+      "ipAddress": "127.0.0.1"
+    },
     {
       "id": 39,
       "username": "superadmin",
@@ -1169,6 +1623,18 @@
       "timestamp": "2026-09-05T19:47:42.677Z",
       "result": "SUCCESS",
       "ipAddress": "127.0.0.1"
+    }
+  ],
+  "applications": [
+    {
+      "id": 1,
+      "fullName": "Spandan Das",
+      "email": "dfskj@gmail.com",
+      "username": "spandan",
+      "organizationId": 3,
+      "notes": "",
+      "status": "APPROVED",
+      "createdAt": "2026-09-09T14:28:32.020Z"
     }
   ]
 }

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNotification } from '../context/NotificationContext';
-import { User, Mail, Shield, Camera, KeyRound, Save } from 'lucide-react';
+import { User, Mail, Shield, Camera, KeyRound, Save, Eye, EyeOff } from 'lucide-react';
+import { api } from '../api/client';
 
 export function ProfilePage() {
   const { user } = useAuth();
@@ -10,6 +11,7 @@ export function ProfilePage() {
   const [detailsForm, setDetailsForm] = useState({
     fullName: user?.fullName || '',
     email: user?.email || '',
+    username: user?.username || '',
   });
 
   const [passwordForm, setPasswordForm] = useState({
@@ -18,25 +20,35 @@ export function ProfilePage() {
     confirmPassword: '',
   });
 
-  const handleDetailsSubmit = (e: React.FormEvent) => {
+  const [showCurrent, setShowCurrent] = useState(false);
+  const [showNew, setShowNew] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  const handleDetailsSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate API call
-    setTimeout(() => {
+    if (!user?.id) return;
+    try {
+      await api.put(`/users/${user.id}`, { fullName: detailsForm.fullName, email: detailsForm.email, username: detailsForm.username });
       showNotification('success', 'Profile Updated', 'Your personal details have been saved successfully.');
-    }, 500);
+    } catch (e: any) {
+      showNotification('error', 'Update Failed', e.message || 'Failed to update profile details.');
+    }
   };
 
-  const handlePasswordSubmit = (e: React.FormEvent) => {
+  const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user?.id) return;
     if (passwordForm.newPassword !== passwordForm.confirmPassword) {
       showNotification('error', 'Password Mismatch', 'New passwords do not match.');
       return;
     }
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      await api.put(`/users/${user.id}`, { password: passwordForm.newPassword });
       showNotification('success', 'Password Changed', 'Your password has been updated securely.');
       setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
-    }, 500);
+    } catch (e: any) {
+      showNotification('error', 'Update Failed', e.message || 'Failed to update password.');
+    }
   };
 
   const handleAvatarUpload = () => {
@@ -93,6 +105,18 @@ export function ProfilePage() {
                   </div>
                 </div>
                 <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Username</label>
+                  <div className="relative">
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    <input
+                      type="text"
+                      value={detailsForm.username}
+                      onChange={(e) => setDetailsForm({ ...detailsForm, username: e.target.value })}
+                      className="w-full pl-9 pr-4 py-2 bg-slate-50 dark:bg-[#1a1a1f] border border-slate-200 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none text-slate-900 dark:text-white text-sm"
+                    />
+                  </div>
+                </div>
+                <div className="space-y-1.5 md:col-span-2">
                   <label className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Email Address</label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
@@ -126,12 +150,20 @@ export function ProfilePage() {
                 <div className="relative">
                   <KeyRound className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                   <input
-                    type="password"
+                    type={showCurrent ? "text" : "password"}
                     required
                     value={passwordForm.currentPassword}
                     onChange={(e) => setPasswordForm({ ...passwordForm, currentPassword: e.target.value })}
-                    className="w-full pl-9 pr-4 py-2 bg-slate-50 dark:bg-[#1a1a1f] border border-slate-200 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none text-slate-900 dark:text-white text-sm"
+                    className="w-full pl-9 pr-10 py-2 bg-slate-50 dark:bg-[#1a1a1f] border border-slate-200 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none text-slate-900 dark:text-white text-sm"
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowCurrent(!showCurrent)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
+                    tabIndex={-1}
+                  >
+                    {showCurrent ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -140,12 +172,20 @@ export function ProfilePage() {
                   <div className="relative">
                     <KeyRound className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <input
-                      type="password"
+                      type={showNew ? "text" : "password"}
                       required
                       value={passwordForm.newPassword}
                       onChange={(e) => setPasswordForm({ ...passwordForm, newPassword: e.target.value })}
-                      className="w-full pl-9 pr-4 py-2 bg-slate-50 dark:bg-[#1a1a1f] border border-slate-200 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none text-slate-900 dark:text-white text-sm"
+                      className="w-full pl-9 pr-10 py-2 bg-slate-50 dark:bg-[#1a1a1f] border border-slate-200 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none text-slate-900 dark:text-white text-sm"
                     />
+                    <button
+                      type="button"
+                      onClick={() => setShowNew(!showNew)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
+                      tabIndex={-1}
+                    >
+                      {showNew ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
                   </div>
                 </div>
                 <div className="space-y-1.5">
@@ -153,12 +193,20 @@ export function ProfilePage() {
                   <div className="relative">
                     <KeyRound className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <input
-                      type="password"
+                      type={showConfirm ? "text" : "password"}
                       required
                       value={passwordForm.confirmPassword}
                       onChange={(e) => setPasswordForm({ ...passwordForm, confirmPassword: e.target.value })}
-                      className="w-full pl-9 pr-4 py-2 bg-slate-50 dark:bg-[#1a1a1f] border border-slate-200 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none text-slate-900 dark:text-white text-sm"
+                      className="w-full pl-9 pr-10 py-2 bg-slate-50 dark:bg-[#1a1a1f] border border-slate-200 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none text-slate-900 dark:text-white text-sm"
                     />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirm(!showConfirm)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
+                      tabIndex={-1}
+                    >
+                      {showConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
                   </div>
                 </div>
               </div>

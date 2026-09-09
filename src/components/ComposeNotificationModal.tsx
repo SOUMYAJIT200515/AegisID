@@ -8,7 +8,7 @@ interface ComposeNotificationModalProps {
 }
 
 export function ComposeNotificationModal({ isOpen, onClose }: ComposeNotificationModalProps) {
-  const { showNotification } = useNotification();
+  const { showNotification, broadcastNotification } = useNotification();
   const [title, setTitle] = useState('');
   const [message, setMessage] = useState('');
   const [type, setType] = useState<NotificationType>('info');
@@ -16,28 +16,24 @@ export function ComposeNotificationModal({ isOpen, onClose }: ComposeNotificatio
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSending(true);
 
-    // Simulate API broadcast call
-    setTimeout(() => {
-      setIsSending(false);
+    try {
+      await broadcastNotification(type, title, message);
       onClose();
-      
-      // Show confirmation that it was sent
+      // Show confirmation that it was sent locally
       showNotification('success', 'Broadcast Sent', 'Your notification has been broadcasted to all users.');
-      
-      // Simulate receiving the broadcast shortly after (for demonstration)
-      setTimeout(() => {
-        showNotification(type, title, message);
-      }, 1000);
-      
       // Reset form
       setTitle('');
       setMessage('');
       setType('info');
-    }, 800);
+    } catch (err) {
+      showNotification('error', 'Broadcast Failed', 'Failed to send the broadcast notification.');
+    } finally {
+      setIsSending(false);
+    }
   };
 
   return (

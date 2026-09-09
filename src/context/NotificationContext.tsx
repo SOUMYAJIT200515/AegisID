@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useCallback, ReactNode, useEffect, useRef } from 'react';
 import { CheckCircle2, AlertCircle, Info, X } from 'lucide-react';
+import { api } from '../api/client';
 
 export type NotificationType = 'success' | 'error' | 'info';
 
@@ -19,6 +20,7 @@ interface NotificationContextType {
   clearHistory: () => void;
   markAllAsRead: () => void;
   removeActiveNotification: (id: string) => void;
+  broadcastNotification: (type: NotificationType, title: string, message?: string) => Promise<void>;
 }
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
@@ -26,6 +28,47 @@ const NotificationContext = createContext<NotificationContextType | undefined>(u
 export function NotificationProvider({ children }: { children: ReactNode }) {
   const [activeNotifications, setActiveNotifications] = useState<Notification[]>([]);
   const [history, setHistory] = useState<Notification[]>([]);
+  const lastFetchRef = useRef<Date | null>(null);
+
+  const fetchNotifications = useCallback(async () => {
+    try {
+      const data = await api.get('/notifications');
+      if (data && Array.isArray(data)) {
+        const sortedData = data.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+        setHistory(prev => {
+          // Find truly new notifications that we didn't have before to show as active popups
+          if (prev.length > 0) {
+            const prevIds = new Set(prev.map(n => n.id));
+            const newNotifs = sortedData.filter(n => !prevIds.has(n.id) && (lastFetchRef.current && new Date(n.timestamp) > lastFetchRef.current));
+            
+            if (newNotifs.length > 0) {
+              const toActive = newNotifs.map(n => ({ ...n, timestamp: new Date(n.timestamp) }));
+              setActiveNotifications(curr => [...curr, ...toActive]);
+              
+              toActive.forEach(n => {
+                setTimeout(() => {
+                  setActiveNotifications((curr) => curr.filter((an) => an.id !== n.id));
+                }, 5000);
+              });
+            }
+          }
+          return sortedData.map((n: any) => ({
+             ...n,
+             timestamp: new Date(n.timestamp)
+          }));
+        });
+        lastFetchRef.current = new Date();
+      }
+    } catch (err) {
+      console.error("Failed to fetch notifications:", err);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchNotifications();
+    const interval = setInterval(fetchNotifications, 10000); // Poll every 10 seconds
+    return () => clearInterval(interval);
+  }, [fetchNotifications]);
 
   const showNotification = useCallback((type: NotificationType, title: string, message?: string) => {
     const id = Math.random().toString(36).substring(2, 9);
@@ -38,6 +81,15 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
       setActiveNotifications((prev) => prev.filter((n) => n.id !== id));
     }, 5000);
   }, []);
+
+  const broadcastNotification = useCallback(async (type: NotificationType, title: string, message?: string) => {
+    try {
+      await api.post('/notifications', { type, title, message });
+      await fetchNotifications(); // immediately fetch to update local state
+    } catch (e) {
+      console.error("Failed to broadcast notification", e);
+    }
+  }, [fetchNotifications]);
 
   const removeActiveNotification = (id: string) => {
     setActiveNotifications((prev) => prev.filter((n) => n.id !== id));
@@ -52,7 +104,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <NotificationContext.Provider value={{ showNotification, history, activeNotifications, clearHistory, markAllAsRead, removeActiveNotification }}>
+    <NotificationContext.Provider value={{ showNotification, history, activeNotifications, clearHistory, markAllAsRead, removeActiveNotification, broadcastNotification }}>
       {children}
       <div className="fixed bottom-4 right-4 z-[100] flex flex-col space-y-2 pointer-events-none">
         {activeNotifications.map((n) => (

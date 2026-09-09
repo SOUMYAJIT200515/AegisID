@@ -86,6 +86,10 @@ async function startServer() {
         updatedAt: new Date().toISOString()
       }
     ],
+    applications: [
+      { id: 1, fullName: "Alice Smith", email: "alice@techcorp.com", username: "alicesmith", organizationId: 4, notes: "Requesting access to digital asset management.", status: "PENDING", createdAt: new Date().toISOString() }
+    ],
+    notifications: [] as any[],
     organizations: [
       { id: 1, name: "Aegis Global Foundation", code: "AEGIS", country: "Switzerland", status: "ACTIVE" },
       { id: 2, name: "National Identity Authority", code: "NIA", country: "United States", status: "ACTIVE" },
@@ -408,6 +412,74 @@ async function startServer() {
   });
 
   // ==========================================
+  // APPLICATIONS APIs
+  // ==========================================
+  app.get("/api/applications", (req, res) => {
+    res.json({ success: true, data: db.applications || [] });
+  });
+
+  app.post("/api/applications", (req, res) => {
+    const { fullName, email, username, organizationId, notes } = req.body;
+    if (!fullName || !email || !username) {
+      return res.status(400).json({ success: false, error: "BAD_REQUEST", message: "Missing required fields" });
+    }
+    if (!db.applications) db.applications = [];
+    const newApp = {
+      id: db.applications.length + 1,
+      fullName,
+      email,
+      username,
+      organizationId: Number(organizationId) || 1,
+      notes: notes || "",
+      status: "PENDING",
+      createdAt: new Date().toISOString()
+    };
+    db.applications.push(newApp);
+    saveDb();
+    res.status(201).json({ success: true, data: newApp, message: "Application submitted successfully" });
+  });
+
+  app.post("/api/applications/:id/approve", (req, res) => {
+    if (!db.applications) db.applications = [];
+    const app = db.applications.find(a => a.id === Number(req.params.id));
+    if (!app) return res.status(404).json({ success: false, error: "NOT_FOUND", message: "Application not found" });
+    
+    app.status = "APPROVED";
+    
+    // Password will be {firstname}@26
+    const firstname = app.fullName.trim().split(' ')[0].toLowerCase().replace(/[^a-z0-9]/g, '') || "user";
+    const password = `${firstname}@26`;
+
+    const newUser = {
+      id: db.users.length + 1,
+      organizationId: app.organizationId || 1,
+      departmentId: 1,
+      employeeCode: `EMP-${db.users.length + 10}`,
+      username: app.username,
+      email: app.email,
+      fullName: app.fullName,
+      password: password,
+      status: "ACTIVE",
+      role: "USER",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    db.users.push(newUser);
+    saveDb();
+    logAudit("admin", "APPLICATION_APPROVE", "USER", String(newUser.id), "SUCCESS", req.ip);
+    res.json({ success: true, data: { application: app, user: newUser, generatedPassword: password }, message: "Application approved and user created" });
+  });
+
+  app.post("/api/applications/:id/reject", (req, res) => {
+    if (!db.applications) db.applications = [];
+    const app = db.applications.find(a => a.id === Number(req.params.id));
+    if (!app) return res.status(404).json({ success: false, error: "NOT_FOUND", message: "Application not found" });
+    app.status = "REJECTED";
+    saveDb();
+    res.json({ success: true, data: app, message: "Application rejected" });
+  });
+
+  // ==========================================
   // ROLES & PERMISSIONS APIs
   // ==========================================
   app.get("/api/roles", (req, res) => {
@@ -689,6 +761,7 @@ async function startServer() {
     res.status(201).json({ success: true, data: newAsset, message: "Asset registered and anchored to blockchain successfully" });
   });
 
+
   app.put("/api/assets/:id/:action", (req, res) => {
     const { id, action } = req.params;
     const { newUserId } = req.body;
@@ -818,6 +891,31 @@ async function startServer() {
     } catch (err: any) {
       res.json({ success: true, analysis: "AegisID AI Security Audit: All cryptographic hashes match blockchain ledger. Zero anomaly detected across 5 active nodes." });
     }
+  });
+
+  // ==========================================
+  // NOTIFICATIONS API
+  // ==========================================
+  app.get("/api/notifications", (req, res) => {
+    res.json({ success: true, data: db.notifications || [] });
+  });
+
+  app.post("/api/notifications", (req, res) => {
+    const { type, title, message } = req.body;
+    const newNotification = {
+      id: Math.random().toString(36).substring(2, 9),
+      type: type || "info",
+      title,
+      message,
+      timestamp: new Date().toISOString(),
+      read: false
+    };
+    if (!db.notifications) {
+      db.notifications = [];
+    }
+    db.notifications.unshift(newNotification);
+    saveDb();
+    res.status(201).json({ success: true, data: newNotification, message: "Notification broadcasted successfully" });
   });
 
   // Vite middleware for development
