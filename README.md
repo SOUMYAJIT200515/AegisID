@@ -2,6 +2,8 @@
 
 > **Blockchain-Based Secure Platform for Identity, Access Control, and Digital Asset Management**
 
+
+
 AegisID is a secure identity and digital asset management platform designed around **decentralized identity, verifiable credentials, role-based access control, and blockchain-backed integrity verification**.
 
 The project is built as a prototype for **Smart India Hackathon (SIH) 2026 – Problem Statement SIH26125**.
