@@ -1,212 +1,170 @@
-# AegisID — Backend (v1)
+# 🛡️ AegisID | Core Backend Architecture (v1)
 
-AegisID is a decentralized identity platform. This repository contains the backend components (TypeScript and Java services) and Solidity contracts used by the system.
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![Java](https://img.shields.io/badge/Java-17-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.x-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)
+![Solidity](https://img.shields.io/badge/Solidity-e6e6e6?style=for-the-badge&logo=solidity&logoColor=black)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 
-This README documents the backend folder: architecture, setup, development and deployment steps, testing, and common environment variables.
+Welcome to the central processing engine of **AegisID**. 
 
-> Note: This README is written to cover typical project layouts present in this backend folder (Node/TypeScript service(s), Java service(s), and Solidity contracts). Adjust paths and commands below to match the exact subfolder names and tooling in your repo.
+This repository contains the backend microservices (TypeScript and Java) and the foundational Solidity smart contracts that power our decentralized digital identity platform. Engineered for scalability, security, and real-time synchronization, this system bridges traditional web services with on-chain identity primitives.
 
-## Table of contents
-- Project overview
-- Tech stack
-- Architecture
-- Backend folder layout
-- Prerequisites
-- Environment variables
-- Local development
-  - TypeScript (Node)
-  - Java
-  - Solidity (contracts)
-- Testing
-- Build & production
-- Docker
-- Contributing
-- License
-- Contact
+---
 
-## Project overview
-AegisID provides identity-related services combining traditional backend APIs (TypeScript/Java) with blockchain-backed identity primitives (Solidity). The backend exposes REST/GraphQL endpoints, handles authentication/authorization, persists metadata, and interacts with on-chain contracts for identity verification and credential anchoring.
+## 🏗️ High-Level Architecture & Tech Stack
 
-## Tech stack
-- TypeScript / Node.js (API, workers)
-- Java (additional services / microservices)
-- Solidity (smart contracts)
-- PostgreSQL / other relational DB (example)
-- Redis (caching, job queues)
-- Hardhat or Truffle for contract development
-- Docker for containerization
+AegisID operates on a polyglot microservices architecture to maximize performance and security:
 
-## Architecture (high level)
-- API layer: TypeScript Node services exposing HTTP/GraphQL endpoints
-- Business layer: Java microservice(s) for heavier workflows, background processing
-- Persistence: Relational DB (e.g., PostgreSQL) and cache (Redis)
-- Blockchain layer: Solidity smart contracts deployed to EVM-compatible networks; Node services interact with the chain via web3/ethers
-- Worker/queue: background jobs for long-running tasks (email, indexing, on-chain watchers)
+* **API Gateway & Fast I/O:** **TypeScript / Node.js** handles high-throughput REST/GraphQL endpoints, lightweight data transformations, and asynchronous workers.
+* **Core Business Logic:** **Java (Spring Boot)** microservices process complex workflows, enforce deep authorization rules, and manage heavy background processing.
+* **Blockchain Layer:** **Solidity** smart contracts deployed on EVM-compatible networks handle verifiable credentials and identity anchoring.
+* **Persistence & Caching:** **PostgreSQL** for relational metadata and **Redis** for distributed caching and job queues.
+* **Infrastructure:** **Docker & Docker Compose** for streamlined containerization and local orchestration.
 
-## Backend folder layout (example)
-Adjust these paths to match the repository:
-- backend/
-  - README.md (this file)
-  - ts-api/                -> TypeScript Node API (package.json)
-  - java-service/          -> Java service (pom.xml or build.gradle)
-  - contracts/             -> Solidity contracts (Hardhat/Truffle config)
-  - scripts/               -> deployment / helper scripts
-  - docker/                -> Docker-related files
+---
 
-## Prerequisites
-Install these locally:
-- Node.js (LTS, e.g., 18+)
-- npm or yarn
-- Java (11+ if using Spring Boot)
-- Maven or Gradle (if using Maven/Gradle)
-- Docker & docker-compose (optional)
-- PostgreSQL (or your chosen DB)
-- Redis (optional)
-- Hardhat/Truffle & an Ethereum-compatible RPC (for contract dev)
+## 📂 Backend Folder Layout
 
-## Environment variables
-Common variables the backend services may expect (replace/extend for your codebase):
-- NODE_ENV=development|production
-- PORT=3000
-- DATABASE_URL=postgres://user:pass@host:port/dbname
-- REDIS_URL=redis://host:port
-- JWT_SECRET=your_jwt_secret
-- WEB3_PROVIDER_URL=https://rpc.mychain.example
-- CONTRACT_ADDRESS=0x...
-- ETH_NETWORK=goerli|mainnet|local
-- SENTRY_DSN=...
-- LOG_LEVEL=info|debug
+The system is compartmentalized into domain-specific subdirectories:
 
-Create a `.env` file in each service directory or set these in your deployment environment.
+```text
+backend/
+├── README.md              # This architecture documentation
+├── ts-api/                # Node.js/TypeScript REST & GraphQL API 
+├── java-service/          # Spring Boot Microservice
+├── contracts/             # Solidity Smart Contracts & Hardhat tooling
+├── scripts/               # Global deployment and CI/CD helper scripts
+└── docker/                # Dockerfiles and docker-compose configurations
+```
+#⚙️ Prerequisites
+To run this environment locally, ensure you have the following installed:
 
-## Local development
+* Node.js (LTS, v18+) & npm/yarn
 
-General approach: open one terminal per service (TypeScript, Java, contracts) and run each service in dev mode.
+* Java Development Kit (JDK) (v17+) & Maven/Gradle
 
-### TypeScript (Node) service
-1. Change to the TypeScript service folder. Example:
-   cd backend/ts-api
+* Docker & Docker Compose (Highly recommended for DB/Redis simulation)
 
-2. Install dependencies:
-   npm install
-   # or
-   yarn install
+* PostgreSQL & Redis (If not using Docker)
 
-3. Start development server (watch mode):
-   npm run dev
-   # or
-   yarn dev
+* An EVM-compatible RPC provider (for smart contract interactions)
 
-4. Build and run production:
-   npm run build
-   npm start
+# 🔐 Environment Variables
+Each service requires specific environment variables. Create a .env file in the respective service directories (ts-api, java-service, contracts) based on their .env.example templates.
 
-Notes:
-- If `package.json` scripts differ, use the actual script names in your repo (e.g., `start:dev`, `dev`, `watch`).
-- Use ts-node / nodemon for hot reload in development.
+Common Global Variables:
 
-### Java service
-If the Java service uses Maven:
-1. Change to the Java folder:
-   cd backend/java-service
+```Properties
+NODE_ENV=development
+PORT=3000
+DATABASE_URL=postgres://user:pass@localhost:5432/aegisid
+REDIS_URL=redis://localhost:6379
+JWT_SECRET=your_super_secret_jwt_key
+WEB3_PROVIDER_URL=[https://rpc.mychain.example](https://rpc.mychain.example)
+CONTRACT_ADDRESS=0xYourDeployedContractAddress
+ETH_NETWORK=goerli # or mainnet, localhost
+SENTRY_DSN=your_sentry_dsn
+LOG_LEVEL=debug
+```
+# 🚀 Local Development Workflow
+To boot the complete backend, you will typically run the services in parallel using separate terminal instances.
 
-2. Build & run:
-   mvn clean package
-   mvn spring-boot:run
-   # or run the jar:
-   java -jar target/<artifact>.jar
+### 1. TypeScript API (Node.js)
+Navigate to the ts-api directory to start the Node gateway:
 
-If Gradle:
-   ./gradlew bootRun
+```Bash
+cd ts-api
+npm install
+npm run dev # Starts server with nodemon/ts-node for hot-reloading
+```
+### 2. Java Service (Spring Boot)
+Navigate to the java-service directory to boot the Java engine:
 
-Adjust commands according to your build system.
+```Bash
+cd java-service
+mvn clean package
+mvn spring-boot:run
+```
+### 3. Smart Contracts (Solidity/Hardhat)
+Navigate to the contracts directory to manage local blockchain state:
 
-### Solidity contracts
-If contracts are in `backend/contracts` and use Hardhat:
-1. cd backend/contracts
-2. Install:
-   npm install
-3. Compile:
-   npx hardhat compile
-4. Run tests:
-   npx hardhat test
-5. Deploy to local network (example with Hardhat node):
-   npx hardhat node
-   npx hardhat run scripts/deploy.js --network localhost
+```Bash
+cd contracts
+npm install
+npx hardhat compile
+# Terminal A: Start local node
+npx hardhat node
 
-If Truffle is used, substitute with `truffle compile`, `truffle test`, `truffle migrate`.
+# Terminal B: Deploy contracts locally
+npx hardhat run scripts/deploy.js --network localhost
+```
+# 🧪 Testing
+We enforce strict test coverage across all stacks. Run tests locally or configure your CI/CD pipelines to execute these before merging:
 
-## Testing
-- TypeScript:
-  npm test
-  # or
-  yarn test
+* TypeScript: npm test (or yarn test) inside ts-api/
 
-- Java:
-  mvn test
-  # or
-  ./gradlew test
+* Java: mvn test (or ./gradlew test) inside java-service/
 
-- Solidity:
-  npx hardhat test
-  # or truffle test
+* Solidity: npx hardhat test inside contracts/
 
-Configure CI to run these commands on pushes and pull requests.
+# 🐳 Docker & Production Build
+Containerization
+Each service includes a Dockerfile for seamless deployment.
 
-## Build & production
-- Build each service (TypeScript: `npm run build`, Java: `mvn package`).
-- Build Docker images for each service and deploy using your orchestration of choice (Kubernetes, Docker Compose, ECS, etc.).
-- Ensure secrets (DB URL, JWT secret, keys) are injected securely (K8s secrets, Vault, or env management).
+```Bash
+# Build the TypeScript Image
+docker build -t aegisid-ts-api:latest ./ts-api
 
-Example Docker Compose skeleton:
-- backend/docker/docker-compose.yml
-  - postgres
-  - redis
-  - ts-api
-  - java-service
-  - optionally a contract-local network
+# Build the Java Service Image
+docker build -t aegisid-java-service:latest ./java-service
+```
+Orchestration
+To spin up the entire ecosystem (DB, Redis, TS API, Java Service) instantly:
 
-## Docker
-If you have Dockerfiles in each service folder:
-- Build:
-  docker build -t aegisid-ts-api:latest ./backend/ts-api
-  docker build -t aegisid-java-service:latest ./backend/java-service
+```Bash
+cd docker
+docker-compose up -d
+```
+Note: Ensure your secrets (DB credentials, JWT keys) are securely injected using K8s Secrets, HashiCorp Vault, or robust environment management in production.
 
-- Run:
-  docker run --env-file backend/ts-api/.env -p 3000:3000 aegisid-ts-api:latest
+# 🛠️ Troubleshooting
+* Database Connection Errors: Verify your DATABASE_URL and ensure the Postgres container/service is running.
 
-Consider multi-stage builds to produce smaller production images.
+* Smart Contract Reverts: Double-check that your CONTRACT_ADDRESS matches the most recent deployment artifact and that you are connected to the correct ETH_NETWORK.
 
-## Contributing
-- Fork the repo and create a feature branch: feature/your-feature
-- Run tests and linters locally before opening PRs
-- Follow existing code style and commit message conventions
-- Describe the change clearly in the PR and include testing steps
+* Port Conflicts: If localhost:3000 or localhost:8080 are in use, remap them in your .env or docker-compose.yml.
 
-## Useful scripts & tips
-- Add `check` scripts to run linters and tests in CI (eslint, prettier, mvn check)
-- Use environment-specific `.env.example` files documenting required variables
-- Add migration tooling (Flyway / Liquibase for Java, TypeORM migrations or Prisma for TypeScript)
+# 🗺️ Roadmap
+[ ] Phase 1: Implement Decentralized Identifiers (DIDs) and Verifiable Credentials (VCs).
 
-## Troubleshooting
-- DB connection errors: verify DATABASE_URL and that the DB is reachable
-- Smart contract issues: confirm network and contract address match deployed artifacts
-- Port conflicts: ensure services use different ports or map them in docker-compose
+[ ] Phase 2: Add event-driven synchronization between on-chain events and off-chain caching.
 
-## Roadmap (examples)
-- Implement DID support and verifiable credentials
-- Add event-driven sync between on-chain events and off-chain state
-- Integrate third-party identity providers (OIDC/SAML)
-- Add automated deployment pipelines
+[ ] Phase 3: Integrate traditional identity providers (OIDC/SAML) for seamless web2 to web3 onboarding.
 
-## License
-Specify your project license here (e.g., MIT). If none, add a LICENSE file at the repo root.
+[ ] Phase 4: Establish automated CI/CD deployment pipelines via GitHub Actions.
 
-## Contact
-Maintainer: Spandan2106
-Repo: https://github.com/Spandan2106/AegisID
+# 🤝 Contributing
+We welcome contributions to make AegisID more secure and robust!
 
-If you want, I can:
-- Add this README to the repository (commit it to backend/README.md).
-- Generate a `README.md` at the repo root that links into backend and other subfolders.
-- Inspect the backend folder and tailor the README with exact service names, scripts, and env vars.
+* 1.Fork the repository.
+
+* 2.Create a feature branch (git checkout -b feature/amazing-feature).
+
+* 3.Run all linters and tests locally.
+
+* 4.Commit your changes using Conventional Commits.
+
+* 5.Open a Pull Request detailing your changes and testing steps.
+
+# 📄 License & Contact
+License: MIT License (See LICENSE file at repo root).
+
+Maintainer: HackVengers
+
+Repository: AegisID GitHub Repo
+
+```
+Built with 💻 and ☕ by Team HackVengers for SIH 2026.
+```
